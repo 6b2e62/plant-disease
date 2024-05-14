@@ -3,7 +3,7 @@ from pathlib import Path
 
 import tensorflow as tf
 
-from .consts import DISEASE_CLASSES, PLANT_CLASSES
+from consts import DISEASE_CLASSES, PLANT_CLASSES
 
 
 class Dataset:
