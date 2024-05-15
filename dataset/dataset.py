@@ -40,12 +40,8 @@ class Dataset:
     def __load_dataset(self) -> tf.data.Dataset:
         # check if path has 'test' word in it
         dataset = tf.data.Dataset.list_files(str(self.data_dir / '*/*'))
-        if 'test' in str(self.data_dir).lower():
-            # file names issue - labels have camel case (regex?) and differs from the train/valid sets
-            pass
-        else:
-            dataset = dataset.map(
-                self.__preprocess, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+        dataset = dataset.map(
+            self.__preprocess, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
         return dataset
 
