@@ -88,7 +88,7 @@ class DataManager:
                 shutil.move(file, test_dir / category)
 
     def resize_dataset(self, source_dataset_name, shape):
-        dataset_name = "resized_dataset"
+        dataset_name = "resized_dataset_%s_%s"
         if not os.path.exists(main_path / dataset_name):
             counter=0
             for file in glob.glob(str(path_to_train_and_valid) % source_dataset_name, recursive=True):
@@ -97,7 +97,7 @@ class DataManager:
                 image = cv2.imread(path_to_file)
                 image = cv2.resize(image, shape)
                 new_path = path_to_file.replace(
-                    source_dataset_name, dataset_name)
+                    source_dataset_name, dataset_name % (shape[0], shape[1]))
                 self.write_image(image, new_path)
                 print("Resized %s files" % (counter), end='\r')
 
