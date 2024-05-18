@@ -1,6 +1,7 @@
 secrets.txt
 .ipynb_checkpoints
 data/
+wandb/
 *.zip
 # https://github.com/microsoft/vscode-python/blob/main/.gitignore
 .DS_Store

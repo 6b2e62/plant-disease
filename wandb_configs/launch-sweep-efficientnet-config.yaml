@@ -1,0 +1,30 @@
+version: 1
+entity: uczenie-maszynowe-projekt
+project: Detection of plant diseases
+job: uczenie-maszynowe-projekt/Detection of plant diseases/efficientnet:latest
+name: efficientnet
+method: bayes
+metric:
+  goal: minimize
+  name: loss
+# TODO: add proper parameters for EfficientNet
+parameters:
+  batch_size:
+    values:
+      - 8
+      - 16
+      - 32
+      - 64
+      - 128
+  epochs:
+    distribution: int_uniform
+    max: 100
+    min: 20
+  learning_rate:
+    distribution: uniform
+    max: 0.02
+    min: 0.005
+  n_startup_trials:
+    distribution: int_uniform
+    max: 10
+    min: 0

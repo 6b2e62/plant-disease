@@ -3,7 +3,7 @@ import tensorflow as tf
 import wandb
 from wandb.keras import WandbMetricsLogger
 
-class MobileNetV2Model:
+class EfficientNetV2B0Model:
     def __init__(self):
         config = {
             "epoch": 5,
@@ -12,7 +12,7 @@ class MobileNetV2Model:
             "loss": "sparse_categorical_crossentropy",
             "metrics": ["accuracy"],
         }
-        settings = wandb.Settings(job_name="efficientNetv2b0-model-job")
+        settings = wandb.Settings(job_name="efficientnet")
         wandb.init(
             project="Detection of plant diseases",
             entity="uczenie-maszynowe-projekt",

@@ -1,3 +1,4 @@
+# LEN 14
 PLANT_CLASSES = [
     "Tomato",
     "Potato",
@@ -15,6 +16,7 @@ PLANT_CLASSES = [
     "Raspberry",
 ]
 
+# LEN 21
 DISEASE_CLASSES = [
     "healthy",
     "Northern_Leaf_Blight",

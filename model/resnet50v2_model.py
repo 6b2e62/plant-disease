@@ -13,7 +13,7 @@ class Resnet50Model:
             "loss": "sparse_categorical_crossentropy",
             "metrics": ["accuracy"],
         }
-        settings = wandb.Settings(job_name="resnet50v2-model-job")
+        settings = wandb.Settings(job_name="resnet50")
         wandb.init(
             project="Detection of plant diseases",
             entity="uczenie-maszynowe-projekt",

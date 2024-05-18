@@ -1,7 +1,23 @@
-from model.test_model import TestModel
-from model.resnet_50_model import Resnet50Model
-from pathlib import Path
-from dataset.dataset import Dataset
+import argparse
 
-model = TestModel()
-history = model.fit()
+from model.efficentnetv2b0_model import EfficientNetV2B0Model
+from model.mobilenetv2_model import MobilenetV2Model
+from model.resnet50v2_model import Resnet50Model
+from model.test_model import TestModel
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--model', type=str, choices=[
+                    'resnet50', 'efficientnet', 'mobilenet'], help='Choose the type of model')
+args = parser.parse_args()
+
+if __name__ == '__main__':
+    if args.model == 'resnet50':
+        model = Resnet50Model()
+    elif args.model == 'efficientnet':
+        model = EfficientNetV2B0Model()
+    elif args.model == 'mobilenet':
+        model = MobilenetV2Model()
+    else:
+        model = TestModel()
+
+    model.fit()
