@@ -1,8 +1,8 @@
 import argparse
 
-from model.efficentnetv2b0_model import EfficientNetV2B0Model
-from model.mobilenetv2_model import MobilenetV2Model
-from model.resnet50v2_model import Resnet50Model
+from model.efficentnetv2b0 import EfficientNetV2B0Model
+from model.mobilenetv2 import MobilenetV2Model
+from model.resnet50v2 import Resnet50Model
 from model.test_model import TestModel
 
 parser = argparse.ArgumentParser()
