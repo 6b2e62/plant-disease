@@ -3,9 +3,11 @@ from typing import Optional
 
 import tensorflow as tf
 from wandb.integration.keras import WandbMetricsLogger
-from dataset.dataset import Dataset
 
 import wandb
+from dataset.dataset import Dataset
+
+
 class Model:
     '''
     Params:
@@ -67,10 +69,14 @@ class Model:
         '''
         Load the dataset.
         '''
-        self.train_ds = Dataset(ds_path / "train", batch_size=self.config.batch_size)
-        self.valid_ds = Dataset(ds_path / "valid", batch_size=self.config.batch_size)
-        self.test_ds = Dataset(ds_path / "test", batch_size=self.config.batch_size)
-        self.input_shape = self.train_ds.take(1).as_numpy_iterator().next()[0].shape[1:]
+        self.train_ds = Dataset(
+            ds_path / "train", batch_size=self.config.batch_size)
+        self.valid_ds = Dataset(
+            ds_path / "valid", batch_size=self.config.batch_size)
+        self.test_ds = Dataset(
+            ds_path / "test", batch_size=self.config.batch_size)
+        self.input_shape = self.train_ds.take(
+            1).as_numpy_iterator().next()[0].shape[1:]
 
     def __add_classifier(self):
         '''

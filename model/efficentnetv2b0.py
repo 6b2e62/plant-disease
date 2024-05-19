@@ -1,7 +1,7 @@
 import tensorflow as tf
+from wandb.integration.keras import WandbMetricsLogger
 
 import wandb
-from wandb.integration.keras import WandbMetricsLogger
 
 
 class EfficientNetV2B0Model:
@@ -33,7 +33,7 @@ class EfficientNetV2B0Model:
             input_tensor=None,
             pooling=None,
             classifier_activation="softmax",
-        )         
+        )
 
     def __compile(self):
         self.model.compile(
