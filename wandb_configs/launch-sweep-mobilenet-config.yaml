@@ -2,6 +2,8 @@ entity: uczenie-maszynowe-projekt
 project: Detection of plant diseases
 job: uczenie-maszynowe-projekt/Detection of plant diseases/mobilenet:latest
 name: mobilenet
+program: main.py
+
 method: bayes
 metric:
   goal: minimize
@@ -26,6 +28,13 @@ parameters:
     values:
       - adam
       - sgd
+
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - "--model"
+  - "mobilenet"
 
 scheduler:
   job: uczenie-maszynowe-projekt/Detection of plant diseases/mobilenet:latest

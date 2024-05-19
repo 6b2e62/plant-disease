@@ -2,6 +2,8 @@ entity: uczenie-maszynowe-projekt
 project: Detection of plant diseases
 job: uczenie-maszynowe-projekt/Detection of plant diseases/resnet50:latest
 name: resnet50
+program: main.py
+
 method: bayes
 metric:
   goal: minimize
@@ -27,3 +29,10 @@ parameters:
     distribution: int_uniform
     max: 10
     min: 0
+
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - "--model"
+  - "resnet50"
