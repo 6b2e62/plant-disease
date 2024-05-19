@@ -4,4 +4,4 @@ numpy==1.26.4
 opencv-python==4.9.0.80
 numpy==1.26.4
 wget==3.2
-wandb[launch]==0.17.0
+wandb[launch]==0.16.6

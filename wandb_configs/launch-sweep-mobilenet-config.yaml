@@ -30,18 +30,7 @@ parameters:
       - sgd
 
 command:
-  - ${env}
-  - ${interpreter}
+  - python3
   - ${program}
   - "--model"
   - "mobilenet"
-
-scheduler:
-  job: uczenie-maszynowe-projekt/Detection of plant diseases/mobilenet:latest
-  num_workers: 2
-  settings:
-      pruner:
-        type: PercentilePruner
-        args:
-          percentile: 25.0  # kill 75% of runs
-          n_warmup_steps: 10  # pruning disabled for first x steps

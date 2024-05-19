@@ -1,9 +1,9 @@
-max_jobs: 1
+max_jobs: 20
 
 entity: uczenie-maszynowe-projekt
 
 queues:
-  - 24GB CPU1
+  - sweeps-mobilenet
 
 builder:
   type: docker

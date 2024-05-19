@@ -6,7 +6,7 @@
 
 PROJECT = "Detection of plant diseases"
 ENTITY = "uczenie-maszynowe-projekt"
-MOBILENET_SWEEP_ID = e1l9pbn2
+MOBILENET_SWEEP_ID = zmxqc1vl
 
 # Use inside docker container
 download-dataset:
@@ -33,13 +33,13 @@ check-gpu:
 
 # wandb commands
 create-mobilenet-job:
-	wandb job create --project $(PROJECT) --entity $(ENTITY) --name "mobilenet" git https://github.com/6b2e62/plant-disease --entry-point "python3 main.py --model mobilenet"
+	wandb job create --project $(PROJECT) --entity $(ENTITY) --name "mobilenet" git git@github.com:6b2e62/plant-disease.git --entry-point "python3 main.py --model mobilenet"
 
 create-efficientnet-job:
-	wandb job create --project $(PROJECT) --entity $(ENTITY) --name "efficientnet" git https://github.com/6b2e62/plant-disease --entry-point "python3 main.py --model efficientnet"
+	wandb job create --project $(PROJECT) --entity $(ENTITY) --name "efficientnet" git git@github.com:6b2e62/plant-disease.git --entry-point "python3 main.py --model efficientnet"
 
 create-resnet50-job:
-	wandb job create --project $(PROJECT) --entity $(ENTITY) --name "resnet50" git https://github.com/6b2e62/plant-disease --entry-point "python3 main.py --model resnet50"
+	wandb job create --project $(PROJECT) --entity $(ENTITY) --name "resnet50" git git@github.com:6b2e62/plant-disease.git --entry-point "python3 main.py --model resnet50"
 
 create-mobilenet-sweep:
 	wandb launch-sweep ./wandb_configs/launch-sweep-mobilenet-config.yaml --project $(PROJECT) --entity $(ENTITY) --queue sweeps-mobilenet
@@ -57,5 +57,5 @@ resume-mobilenet-sweep:
 stop-mobilenet-sweep: 
 	wandb sweep --pause $(ENTITY)/$(PROJECT)/$(MOBILENET_SWEEP_ID)
 
-run-mobilenet: resume-mobilenet-sweep
-	wandb agent --count 1 $(MOBILENET_SWEEP_ID) --project $(PROJECT) --entity $(ENTITY)
+run-mobilenet: 
+	wandb launch-agent -c ./wandb_configs/launch-config.yaml
