@@ -2,16 +2,18 @@
 .PHONY: docker-run docker-build check-gpu
 .PHONY: create-mobilenet-job create-efficientnet-job create-resnet50-job
 .PHONY: create-mobilenet-sweep create-efficientnet-sweep create-resnet50-sweep
+.PHONY: resume-mobilenet-sweep stop-mobilenet-sweep run-mobilenet
 
 PROJECT = "Detection of plant diseases"
 ENTITY = "uczenie-maszynowe-projekt"
+MOBILENET_SWEEP_ID = vsmbk3n4
 
 # Use inside docker container
 download-dataset:
 	python3 ./file_manager/data_manager.py --download
 
 resize-dataset:
-	python3 ./file_manager/data_manager.py --resize --shape 64 64 --source "original_dataset"
+	python3 ./file_manager/data_manager.py --resize --shape 96 96 --source "original_dataset"
 
 sobel-dataset:
 	python3 ./file_manager/data_manager.py --sobel --source "resized_dataset"
@@ -40,10 +42,20 @@ create-resnet50-job:
 	wandb job create --project $(PROJECT) --entity $(ENTITY) --name "resnet50" git https://github.com/6b2e62/plant-disease --entry-point "python3 main.py --model resnet50"
 
 create-mobilenet-sweep:
-	wandb launch-sweep ./wandb_configs/launch-sweep-mobilenet-config.yaml --queue sweeps-mobilenet
+	wandb launch-sweep ./wandb_configs/launch-sweep-mobilenet-config.yaml --project $(PROJECT) --entity $(ENTITY) --queue sweeps-mobilenet
 
 create-efficientnet-sweep:
-	wandb launch-sweep ./wandb_configs/launch-sweep-efficientnet-config.yaml --queue sweeps-efficientnet
+	wandb launch-sweep ./wandb_configs/launch-sweep-efficientnet-config.yaml --project $(PROJECT) --entity $(ENTITY) --queue sweeps-efficientnet
 
 create-resnet50-sweep:
-	wandb launch-sweep ./wandb_configs/launch-sweep-resnet50-config.yaml --queue sweeps-resnet50
+	wandb launch-sweep ./wandb_configs/launch-sweep-resnet50-config.yaml --project $(PROJECT) --entity $(ENTITY) --queue sweeps-resnet50
+
+# Mobilenet
+resume-mobilenet-sweep:
+	wandb sweep --resume $(ENTITY)/$(PROJECT)/$(MOBILENET_SWEEP_ID)
+
+stop-mobilenet-sweep: 
+	wandb sweep --pause $(ENTITY)/$(PROJECT)/$(MOBILENET_SWEEP_ID)
+
+run-mobilenet: resume-mobilenet-sweep
+	wandb agent --count 1 $(MOBILENET_SWEEP_ID) --project $(PROJECT) --entity $(ENTITY)

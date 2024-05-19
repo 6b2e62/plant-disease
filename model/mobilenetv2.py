@@ -7,9 +7,10 @@ class MobilenetV2Model(Model):
     job_config = {
         "epoch": 5,
         "learning_rate": 0.01,
+        "batch_size": 64,
         "optimizer": "sgd",
-        "loss": "sparse_categorical_crossentropy",
-        "metrics": ["accuracy", "loss"],
+        "loss": "categorical_crossentropy",
+        "metrics": ["accuracy"],
     }
 
     def build_model(self):

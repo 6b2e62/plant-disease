@@ -3,6 +3,7 @@ from typing import Optional
 
 import tensorflow as tf
 from wandb.keras import WandbMetricsLogger
+from dataset.dataset import Dataset
 
 import wandb
 
@@ -25,8 +26,8 @@ class Model:
         self.train_ds, self.valid_ds, self.test_ds = None, None, None
         self.input_shape = None
 
-        self.__load_dataset(ds_path)
         self.__init_wandb()
+        self.__load_dataset(ds_path)
         self.model = self.build_model()
         self.__add_classifier()
         self.__compile()
@@ -51,8 +52,14 @@ class Model:
         '''
         Compile the model.
         '''
+        if self.config.optimizer == "sgd":
+            optimizer = tf.keras.optimizers.SGD(
+                learning_rate=self.config.learning_rate)
+        elif self.config.optimizer == "adam":
+            optimizer = tf.keras.optimizers.Adam(
+                learning_rate=self.config.learning_rate)
         self.model.compile(
-            optimizer=self.config.optimizer,
+            optimizer=optimizer,
             loss=self.config.loss,
             metrics=self.config.metrics,
         )
@@ -61,7 +68,10 @@ class Model:
         '''
         Load the dataset.
         '''
-        self.input_shape = (128, 128, 3)
+        self.train_ds = Dataset(ds_path / "train", batch_size=self.config.batch_size)
+        self.valid_ds = Dataset(ds_path / "valid", batch_size=self.config.batch_size)
+        self.test_ds = Dataset(ds_path / "test", batch_size=self.config.batch_size)
+        self.input_shape = self.train_ds.take(1).as_numpy_iterator().next()[0].shape[1:]
 
     def __add_classifier(self):
         '''
@@ -88,12 +98,15 @@ class Model:
             # WandbModelCheckpoint(filepath="models"),
         ]
         return self.model.fit(
-            x=self.x_train,
-            y=self.y_train,
+            self.train_ds.get_dataset(),
+            validation_data=self.valid_ds.get_dataset(),
             epochs=self.config.epoch,
             batch_size=self.config.batch_size,
             callbacks=wandb_callbacks,
         )
+
+    def evaluate(self):
+        return self.model.evaluate(self.test_ds.get_dataset())
 
     def save(self, filepath):
         self.model.save(filepath)

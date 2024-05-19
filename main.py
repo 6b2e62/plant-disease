@@ -16,7 +16,7 @@ if __name__ == '__main__':
     elif args.model == 'efficientnet':
         model = EfficientNetV2B0Model()
     elif args.model == 'mobilenet':
-        model = MobilenetV2Model()
+        model = MobilenetV2Model('./data/resized_dataset_96_96/')
     else:
         model = TestModel()
 

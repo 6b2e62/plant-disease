@@ -3,7 +3,7 @@ from pathlib import Path
 
 import tensorflow as tf
 
-from consts import DISEASE_CLASSES, PLANT_CLASSES
+from .consts import DISEASE_CLASSES, PLANT_CLASSES
 
 
 class Dataset:
@@ -36,11 +36,16 @@ class Dataset:
             .repeat(self.repeat)\
             .batch(self.batch_size, drop_remainder=True)\
             .prefetch(tf.data.experimental.AUTOTUNE)
+        
+    def get_dataset(self) -> tf.data.Dataset:
+        return self.dataset
 
     def __load_dataset(self) -> tf.data.Dataset:
         dataset = tf.data.Dataset.list_files(str(self.data_dir / '*/*'))
         dataset = dataset.map(
             self.__preprocess, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+        # Take only plant labels (y1)
+        dataset = dataset.map(lambda x, y1, y2: (x, y1))
 
         return dataset
 
