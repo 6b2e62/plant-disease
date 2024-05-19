@@ -2,11 +2,10 @@ from pathlib import Path
 from typing import Optional
 
 import tensorflow as tf
-from wandb.keras import WandbMetricsLogger
+from wandb.integration.keras import WandbMetricsLogger
 from dataset.dataset import Dataset
 
 import wandb
-
 class Model:
     '''
     Params:

@@ -1,7 +1,8 @@
 import tensorflow as tf
 
 import wandb
-from wandb.keras import WandbMetricsLogger
+from wandb.integration.keras import WandbMetricsLogger
+
 
 class EfficientNetV2B0Model:
     def __init__(self):

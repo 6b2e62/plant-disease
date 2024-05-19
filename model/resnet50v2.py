@@ -1,7 +1,8 @@
 import tensorflow as tf
 
 import wandb
-from wandb.keras import WandbMetricsLogger
+from wandb.integration.keras import WandbMetricsLogger
+
 
 
 class Resnet50Model:
