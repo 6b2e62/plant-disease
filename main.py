@@ -1,4 +1,5 @@
 import argparse
+from pathlib import Path
 
 from model.efficentnetv2b0 import EfficientNetV2B0Model
 from model.mobilenetv2 import MobilenetV2Model
@@ -18,7 +19,7 @@ if __name__ == '__main__':
     elif args.model == 'efficientnet':
         model = EfficientNetV2B0Model()
     elif args.model == 'mobilenet':
-        model = MobilenetV2Model('./data/resized_dataset_96_96/')
+        model = MobilenetV2Model(Path('./data/resized_dataset_96_96/'))
     else:
         model = TestModel()
 
