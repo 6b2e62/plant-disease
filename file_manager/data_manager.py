@@ -90,9 +90,9 @@ class DataManager:
     def resize_dataset(self, source_dataset_name, shape):
         dataset_name = "resized_dataset_%s_%s"
         if not os.path.exists(main_path / dataset_name):
-            counter=0
+            counter = 0
             for file in glob.glob(str(path_to_train_and_valid) % source_dataset_name, recursive=True):
-                counter+=1
+                counter += 1
                 path_to_file = file.replace("\\", "/")
                 image = cv2.imread(path_to_file)
                 image = cv2.resize(image, shape)
@@ -104,9 +104,9 @@ class DataManager:
     def sobelx(self, source_dataset_name):
         dataset_name = "sobel_dataset"
         if not os.path.exists(main_path / dataset_name):
-            counter=0
+            counter = 0
             for file in glob.glob(str(path_to_train_and_valid) % source_dataset_name, recursive=True):
-                counter+=1
+                counter += 1
                 path_to_file = file.replace("\\", "/")
                 image = cv2.imread(path_to_file)
                 sobel = cv2.Sobel(image, cv2.CV_64F, 1, 0, ksize=5)
