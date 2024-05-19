@@ -1,4 +1,3 @@
-version: 1
 entity: uczenie-maszynowe-projekt
 project: Detection of plant diseases
 job: uczenie-maszynowe-projekt/Detection of plant diseases/efficientnet:latest
@@ -6,7 +5,7 @@ name: efficientnet
 method: bayes
 metric:
   goal: minimize
-  name: loss
+  name: val_loss
 # TODO: add proper parameters for EfficientNet
 parameters:
   batch_size:
