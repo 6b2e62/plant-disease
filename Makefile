@@ -6,7 +6,7 @@
 
 PROJECT = "Detection of plant diseases"
 ENTITY = "uczenie-maszynowe-projekt"
-MOBILENET_SWEEP_ID = vsmbk3n4
+MOBILENET_SWEEP_ID = 061vn1g5
 
 # Use inside docker container
 download-dataset:
