@@ -3,7 +3,7 @@ from pathlib import Path
 
 import tensorflow as tf
 
-from .consts import DISEASE_CLASSES, PLANT_CLASSES
+from .consts import ALL_CLASSES, DISEASE_CLASSES, PLANT_CLASSES
 
 
 class Dataset:
@@ -36,16 +36,14 @@ class Dataset:
             .repeat(self.repeat)\
             .batch(self.batch_size, drop_remainder=True)\
             .prefetch(tf.data.experimental.AUTOTUNE)
-        
+
     def get_dataset(self) -> tf.data.Dataset:
         return self.dataset
 
     def __load_dataset(self) -> tf.data.Dataset:
         dataset = tf.data.Dataset.list_files(str(self.data_dir / '*/*'))
         dataset = dataset.map(
-            self.__preprocess, num_parallel_calls=tf.data.experimental.AUTOTUNE)
-        # Take only plant labels (y1)
-        dataset = dataset.map(lambda x, y1, y2: (x, y1))
+            self.__preprocess_all_in_one, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
         return dataset
 
@@ -59,10 +57,21 @@ class Dataset:
 
         return tf.cast(one_hot_plant, dtype=tf.uint8, name=None), tf.cast(one_hot_disease, dtype=tf.uint8, name=None)
 
+    def __get_label(self, image_path):
+        path = tf.strings.split(image_path, os.path.sep)[-2]
+        one_hot = path == ALL_CLASSES
+
+        return tf.cast(one_hot, dtype=tf.uint8, name=None)
+
     def __get_image(self, image_path):
         img = tf.io.read_file(image_path)
         img = tf.io.decode_jpeg(img, channels=3)
         return tf.cast(img, dtype=tf.float32, name=None) / 255.
+
+    def __preprocess_all_in_one(self, image_path):
+        label = self.__get_label(image_path)
+        image = self.__get_image(image_path)
+        return image, label
 
     def __preprocess(self, image_path):
         labels = self.__get_labels(image_path)

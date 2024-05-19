@@ -88,7 +88,7 @@ class Model:
             self.model.layers[-1].output)
         dropout = tf.keras.layers.Dropout(0.2)(average_pooling_2d)
         dense = self.dense1 = tf.keras.layers.Dense(
-            14, activation=tf.nn.softmax)(dropout)
+            38, activation=tf.nn.softmax)(dropout)
 
         # Freeze the Model
         self.model.trainable = not self.transfer_learning

@@ -11,8 +11,6 @@ parser.add_argument('--model', type=str, choices=[
                     'resnet50', 'efficientnet', 'mobilenet'], help='Choose the type of model')
 args = parser.parse_args()
 
-print("STARTING")
-
 if __name__ == '__main__':
     if args.model == 'resnet50':
         model = Resnet50Model()
