@@ -15,7 +15,7 @@ if __name__ == '__main__':
     if args.model == 'resnet50':
         model = Resnet50Model()
     elif args.model == 'efficientnet':
-        model = EfficientNetV2B0Model()
+        model = EfficientNetV2B0Model(Path('./data/resized_dataset_128_128/'))
     elif args.model == 'mobilenet':
         model = MobilenetV2Model(Path('./data/resized_dataset_96_96/'))
     else:
