@@ -5,9 +5,8 @@ import shutil
 from pathlib import Path
 import zipfile
 from tqdm import tqdm
-
+import gdown
 import cv2
-import wget
 
 main_path = Path("data/")
 path_to_train_and_valid = main_path / "%s/**/*.*"
@@ -32,7 +31,7 @@ class DataManager:
     def download_data(self):
         print("Downloading")
         if not os.path.isfile("archive.zip"):
-            wget.download("https://storage.googleapis.com/kaggle-data-sets/78313/182633/bundle/archive.zip?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=gcp-kaggle-com%40kaggle-161607.iam.gserviceaccount.com%2F20240512%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20240512T222712Z&X-Goog-Expires=259200&X-Goog-SignedHeaders=host&X-Goog-Signature=48a59c070b4f57e2746696d7ce6c77a7efd7e2d421a7d1f66411ab3fb21f688c0a0c81907ef4b788d99767cfd2e72200e6ee42e41fc4548d7874c128beabc2ff12d38aa47dfae1c10a10659e81b8d34c23515c1d6682bcf1f3eefc4e75a1ddba65dec5a03b03eec674272e772279b723f3a2739ca9099b185cf110cc5fb98e96b92622070c8cdd521f6ea0d676e6ba5dc37b23faf919e5dbc8b631e5be8e25f8da5bc74fbb94ff72393702c7348b3adf8140e80269d571ff00dd6aa065c43492d66131f62b9e59c503e1490851748c683680dbf3f929602239c6de297d329c9f3c4b12e389007783c88526f38064afbad73dba9897e408d8e1856b013fadc480")
+            gdown.download(id="1uyNbOYfdpYe777EqfR2yDXgJ8tMOvZFW", output="archive.zip")
 
     def unzip_data(self, file_name, path_to_extract):
         full_path_to_extract = main_path / path_to_extract
