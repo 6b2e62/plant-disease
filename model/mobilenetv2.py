@@ -5,7 +5,7 @@ from .model import Model
 
 class MobilenetV2Model(Model):
     job_config = {
-        "epoch": 5,
+        "epoch": 25,
         "learning_rate": 0.01,
         "batch_size": 64,
         "optimizer": "sgd",

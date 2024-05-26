@@ -114,6 +114,9 @@ class Model:
 
     def evaluate(self):
         return self.model.evaluate(self.test_ds.get_dataset())
+    
+    def load_weights(self, filepath):
+        self.model.load_weights(filepath)
 
     def save(self, filepath):
         self.model.save(filepath)
