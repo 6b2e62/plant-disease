@@ -5,3 +5,4 @@ opencv-python==4.9.0.80
 numpy==1.26.4
 gdown==5.2.0
 wandb[launch]==0.16.6
+gradio==4.31.5
