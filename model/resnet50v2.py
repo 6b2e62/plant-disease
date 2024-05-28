@@ -14,13 +14,14 @@ class Resnet50V2Model(Model):
     }
 
     def __add_classifier(self):
+        self.model.trainable = False
+
         i = tf.keras.layers.Input([None, None, 3], dtype="uint8")
         x = np.ops.cast(i, "float32")
         x = tf.keras.applications.resnet_v2.preprocess_input(x)
         layer = tf.keras.layers.GlobalAveragePooling2D()(self.model(x))
-        dense = tf.keras.layers.Dense(38, activation=tf.nn.softmax)(layer)
-        self.model.trainable = False
-
+        dense = tf.keras.layers.Dense(38, activation='softmax')(layer)
+        
         model_with_classifier = tf.keras.Model(
             inputs=self.model.inputs,
             outputs=dense
