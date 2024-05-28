@@ -3,7 +3,7 @@ from pathlib import Path
 
 from model.efficentnetv2b0 import EfficientNetV2B0Model
 from model.mobilenetv2 import MobilenetV2Model
-from model.resnet50v2 import Resnet50v2Model
+from model.resnet50v2 import Resnet50V2Model
 from model.test_model import TestModel
 
 parser = argparse.ArgumentParser()
@@ -13,7 +13,7 @@ args = parser.parse_args()
 
 if __name__ == '__main__':
     if args.model == 'resnet50':
-        model = Resnet50v2Model(Path('./data/resized_dataset_64_64/'), job_name="ResNet50v2")
+        model = Resnet50V2Model(Path('./data/resized_dataset_64_64/'), job_name="ResNet50v2")
     elif args.model == 'efficientnet':
         model = EfficientNetV2B0Model(Path('./data/resized_dataset_128_128/'), job_name="EfficientNetV2B0")
     elif args.model == 'mobilenet':
