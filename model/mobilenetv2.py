@@ -19,5 +19,4 @@ class MobilenetV2Model(Model):
             include_top=not self.transfer_learning,
             weights=self.weights,
             classifier_activation="softmax",
-
         )
