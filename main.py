@@ -13,6 +13,8 @@ def load_args():
                         'resnet50', 'efficientnet', 'mobilenet'], help='Choose the type of model')
     parser.add_argument('--size', type=str, help='Choose dataset size')
     parser.add_argument('--offline', required=False, action='store_true')
+    parser.add_argument('--epochs', type=int, required=False)
+    parser.add_argument('--with-checkpoints', required=False, action='store_true')
     return parser.parse_args()
 
 def load_model(args):
@@ -32,8 +34,11 @@ if __name__ == '__main__':
 
     if args.offline:
         os.environ["WANDB_MODE"] = "offline"
-    
+
     model = load_model(args)
 
-    model.fit()
+    if args.epochs:
+        model.overload_config(epoch=args.epochs)
+
+    model.fit(checkpoint=args.with_checkpoints)
     model.save(f"{args.model}_{args.size}.keras")

@@ -43,7 +43,7 @@ class Model:
             project="Detection of plant diseases",
             entity="uczenie-maszynowe-projekt",
             config=self.job_config,
-            settings=self.wandb_settings,
+            settings=self.wandb_settings
         )
         self.job_config = wandb.config
 
@@ -100,12 +100,21 @@ class Model:
             outputs=[dense])
         self.model = model_with_classifier
 
-    def fit(self):
+    def fit(self, checkpoint = False):
         wandb_callbacks = [
-            WandbMetricsLogger(log_freq=5),
-            # Not supported with Keras >= 3.0.0
-            # WandbModelCheckpoint(filepath="models"),
+            WandbMetricsLogger(log_freq=5)
         ]
+
+        if checkpoint:
+            checkpoint_filepath = f'checkpoint.{self.__class__.__name__}.keras'
+            model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
+                filepath=checkpoint_filepath,
+                monitor='val_accuracy',
+                mode='max',
+                save_best_only=True
+            )
+            wandb_callbacks.append(model_checkpoint_callback)
+
         return self.model.fit(
             self.train_ds.get_dataset(),
             validation_data=self.valid_ds.get_dataset(),
