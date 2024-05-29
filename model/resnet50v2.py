@@ -11,6 +11,9 @@ class Resnet50V2Model(Model):
         "loss": "categorical_crossentropy",
         "metrics": ["accuracy"],
     }
+    
+    def overload_config(self, epoch = 15):
+        self.job_config.epoch = epoch
 
     def _Model__add_classifier(self):
         layer = tf.keras.layers.GlobalAveragePooling2D()(self.model.layers[-1].output)
