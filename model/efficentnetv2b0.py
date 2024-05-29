@@ -1,7 +1,6 @@
 import tensorflow as tf
 
 from .model import Model
-import numpy as np
 
 class EfficientNetV2B0Model(Model):
     job_config = {

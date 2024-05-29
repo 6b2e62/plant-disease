@@ -35,3 +35,13 @@ make check-gpu # to verify if GPU works
 docker build -t gpu api_key="<wandb_api_key>" .
 docker run --rm -it --gpus all --entrypoint /bin/bash gpu
 ```
+
+# Local WSL CUDA
+
+It might be required to export environment variables after CUDA toolkit installation. Check `Dockerfile` as an example.
+
+```bash
+export CUDNN_PATH="/home/username/.local/lib/python3.10/site-packages/nvidia/cudnn/"
+export LD_LIBRARY_PATH="$CUDNN_PATH/lib":"/usr/local/cuda-12.2/lib64"
+export PATH="$PATH":"/usr/local/cuda-12.2/bin"
+```

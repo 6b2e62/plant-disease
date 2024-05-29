@@ -7,7 +7,6 @@ from wandb.integration.keras import WandbMetricsLogger
 import wandb
 from dataset.dataset import Dataset
 
-
 class Model:
     '''
     Params:
@@ -74,11 +73,11 @@ class Model:
         '''
         Load the dataset.
         '''
-        self.train_ds = Dataset(
+        self.train_ds = Dataset(self.__class__,
             ds_path / "train", batch_size=self.job_config.batch_size)
-        self.valid_ds = Dataset(
+        self.valid_ds = Dataset(self.__class__,
             ds_path / "valid", batch_size=self.job_config.batch_size)
-        self.test_ds = Dataset(
+        self.test_ds = Dataset(self.__class__,
             ds_path / "test", batch_size=self.job_config.batch_size)
         self.input_shape = self.train_ds.take(
             1).as_numpy_iterator().next()[0].shape[1:]

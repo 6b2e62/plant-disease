@@ -4,6 +4,7 @@ from pathlib import Path
 import tensorflow as tf
 
 from .consts import ALL_CLASSES, DISEASE_CLASSES, PLANT_CLASSES
+import model
 
 
 class Dataset:
@@ -20,6 +21,7 @@ class Dataset:
     '''
 
     def __init__(self,
+                 model_class,
                  data_dir: Path,
                  seed: int = 42,
                  repeat: int = 1,
@@ -31,6 +33,7 @@ class Dataset:
         self.repeat = repeat
         self.shuffle_buffer_size = shuffle_buffer_size
         self.batch_size = batch_size
+        self.model_class = model_class
 
         self.dataset = self.__load_dataset()\
             .shuffle(self.shuffle_buffer_size, seed=self.seed)\
@@ -68,7 +71,16 @@ class Dataset:
     def __get_image(self, image_path):
         img = tf.io.read_file(image_path)
         img = tf.io.decode_jpeg(img, channels=3)
-        return tf.cast(img, dtype=tf.float32, name=None) / 255.
+        img = tf.cast(img, dtype=tf.float32)
+        if self.model_class == model.mobilenetv2.MobilenetV2Model:
+            img = tf.keras.applications.mobilenet_v2.preprocess_input(img)
+        elif self.model_class == model.resnet50v2.Resnet50V2Model:
+            img = tf.keras.applications.resnet_v2.preprocess_input(img)
+        elif self.model_class == model.efficentnetv2b0.EfficientNetV2B0Model:
+            img = tf.keras.applications.efficientnet_v2.preprocess_input(img)
+        else:
+            img = img / 255.
+        return img
 
     def __preprocess_all_in_one(self, image_path):
         label = self.__get_label(image_path)

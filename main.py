@@ -1,4 +1,5 @@
 import argparse
+import os
 from pathlib import Path
 
 from model.efficentnetv2b0 import EfficientNetV2B0Model
@@ -11,6 +12,7 @@ def load_args():
     parser.add_argument('--model', type=str, choices=[
                         'resnet50', 'efficientnet', 'mobilenet'], help='Choose the type of model')
     parser.add_argument('--size', type=str, help='Choose dataset size')
+    parser.add_argument('--offline', required=False, action='store_true')
     return parser.parse_args()
 
 def load_model(args):
@@ -27,6 +29,10 @@ def load_model(args):
 
 if __name__ == '__main__':
     args = load_args()
+
+    if args.offline:
+        os.environ["WANDB_MODE"] = "offline"
+    
     model = load_model(args)
 
     model.fit()
