@@ -17,5 +17,6 @@ class EfficientNetV2B0Model(Model):
         return tf.keras.applications.EfficientNetV2B0(
             input_shape=self.input_shape,
             include_top=False,
-            weights='imagenet'
+            weights='imagenet',
+            include_preprocessing=False
         )
