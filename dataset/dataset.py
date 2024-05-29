@@ -23,7 +23,8 @@ class Dataset:
                  data_dir: Path,
                  seed: int = 42,
                  repeat: int = 1,
-                 shuffle_buffer_size: int = 10_000,
+                 # For now setting shuffle_buffer_size to smaller number due to system RAM issues on Google Colab
+                 shuffle_buffer_size: int = 1000,
                  batch_size: int = 64) -> None:
         self.data_dir = data_dir
         self.seed = seed
@@ -43,7 +44,8 @@ class Dataset:
     def __load_dataset(self) -> tf.data.Dataset:
         dataset = tf.data.Dataset.list_files(str(self.data_dir / '*/*'))
         dataset = dataset.map(
-            self.__preprocess_all_in_one, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+            # For now setting num_parallel_calls to 2 due to system RAM issues on Google Colab
+            self.__preprocess_all_in_one, num_parallel_calls=2)
 
         return dataset
 
