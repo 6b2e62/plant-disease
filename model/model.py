@@ -100,6 +100,9 @@ class Model:
             outputs=[dense])
         self.model = model_with_classifier
 
+    def overload_config(self, epoch = 15):
+        self.job_config.update({"epoch": epoch}, allow_val_change=True)
+
     def fit(self, checkpoint = False):
         wandb_callbacks = [
             WandbMetricsLogger(log_freq=5)
