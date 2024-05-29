@@ -20,7 +20,10 @@ class Model:
 
     job_config = dict()
 
-    def __init__(self, ds_path: Path, job_name: str, transfer_learning: bool = True, weights: Optional[str] = "imagenet"):
+    def __init__(self, ds_path: Path,
+                 job_name: str,
+                 transfer_learning: bool = True,
+                 weights: Optional[str] = "imagenet"):
         self.transfer_learning = transfer_learning
         self.weights = weights
         self.wandb_settings = wandb.Settings(job_name=job_name)
@@ -120,3 +123,7 @@ class Model:
 
     def save(self, filepath):
         self.model.save(filepath)
+
+    def predict(self, img):
+        return self.model.predict(img)
+    
