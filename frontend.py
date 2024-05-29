@@ -9,9 +9,11 @@ args = load_args()
 model = load_model(args)
 model.load_weights(f"{args.model}_{args.size}.keras")
 
-# hardcoded for Mobilenet for now
-preprocess_input = tf.keras.applications.mobilenet.preprocess_input
-# preprocess_input = tf.keras.applications.resnet_v2.preprocess_input
+# MobileNet
+# preprocess_input = tf.keras.applications.mobilenet.preprocess_input
+
+# ResNet
+preprocess_input = tf.keras.applications.resnet_v2.preprocess_input
 
 def make_gradcam_heatmap(
     img_array, model, last_conv_layer_name, classifier_layer_names
@@ -94,8 +96,12 @@ def predict(img):
     img = preprocess_input(img)
     predictions = model.predict(img)
 
-    # hardcoded for Mobilenet for now
-    heatmap = make_gradcam_heatmap(img, model.model, "out_relu", ["global_average_pooling2d", "dropout", "dense"])
+
+    # MobileNet
+    # heatmap = make_gradcam_heatmap(img, model.model, "out_relu", ["global_average_pooling2d", "dropout", "dense"])
+
+    # ResNet
+    heatmap = make_gradcam_heatmap(img, model.model, "post_relu", ["global_average_pooling2d", "dense"])
     img_heatmap = save_and_display_gradcam(img_orig, heatmap)
 
     return ALL_CLASSES[np.argmax(predictions[0], axis=-1)], img_heatmap
