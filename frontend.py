@@ -9,6 +9,7 @@ args = load_args()
 model = load_model(args)
 model.load_weights(f"{args.model}_{args.size}.keras")
 
+# hardcoded for Mobilenet for now
 preprocess_input = tf.keras.applications.mobilenet.preprocess_input
 # preprocess_input = tf.keras.applications.resnet_v2.preprocess_input
 
@@ -92,6 +93,8 @@ def predict(img):
     img = np.expand_dims(img, axis=0)
     img = preprocess_input(img)
     predictions = model.predict(img)
+
+    # hardcoded for Mobilenet for now
     heatmap = make_gradcam_heatmap(img, model.model, "out_relu", ["global_average_pooling2d", "dropout", "dense"])
     img_heatmap = save_and_display_gradcam(img_orig, heatmap)
 
