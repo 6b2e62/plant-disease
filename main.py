@@ -24,7 +24,7 @@ def load_model(args):
     elif args.model == 'efficientnet':
         model = EfficientNetV2B0Model(Path(f'./data/resized_dataset_{size}_{size}/'), job_name="EfficientNetV2B0")
     elif args.model == 'mobilenet':
-        model = MobilenetV2Model(Path(f'./data/resized_dataset_{size}_{size}/'), job_name="MobileNetV2")
+        model = MobilenetV2Model(Path(f'./data/resized_dataset_{size}_{size}/'), transfer_learning=False, job_name="MobileNetV2_Beg")
     else:
         model = TestModel()
     return model
@@ -40,5 +40,5 @@ if __name__ == '__main__':
     if args.epochs:
         model.overload_config(epoch=args.epochs)
 
-    model.fit(checkpoint=args.with_checkpoints)
+    model.optuna_train(checkpoints_on_epochs=args.with_checkpoints)
     model.save(f"{args.model}_{args.size}.keras")

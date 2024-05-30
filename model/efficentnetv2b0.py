@@ -5,7 +5,7 @@ from .model import Model
 class EfficientNetV2B0Model(Model):
     job_config = {
             "batch_size": 64,
-            "epoch": 5,
+            "epochs": 5,
             "learning_rate": 0.01,
             "optimizer": "sgd",
             "loss": "categorical_crossentropy",

@@ -5,7 +5,7 @@ from .model import Model
 class Resnet50V2Model(Model):
     job_config = {
         "batch_size": 64,
-        "epoch": 15,
+        "epochs": 15,
         "learning_rate": 0.01,
         "optimizer": "adam",
         "loss": "categorical_crossentropy",
