@@ -161,7 +161,7 @@ class Model:
                                             step=1e-4)
         batch_size = trial.suggest_categorical(
             "batch size", [8, 16, 32, 48, 64, 96, 128])
-        epochs = trial.suggest_int("epochs", 20, 60)
+        epochs = trial.suggest_int("epochs", 20, 30)
         optimizer = trial.suggest_categorical(
             "optimizer", ["adam", "sgd", "rmsprop", "adagrad"])
 
