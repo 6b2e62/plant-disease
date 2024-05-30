@@ -17,7 +17,7 @@ model_class = model.__class__
 if model_class == mod.mobilenetv2.MobilenetV2Model:
     preprocess_input = tf.keras.applications.mobilenet_v2.preprocess_input
 elif model_class == mod.resnet50v2.Resnet50V2Model:
-   preprocess_input =  tf.keras.applications.resnet_v2.preprocess_input
+    preprocess_input = tf.keras.applications.resnet_v2.preprocess_input
 elif model_class == mod.efficentnetv2b0.EfficientNetV2B0Model:
     preprocess_input = tf.keras.applications.efficientnet_v2.preprocess_input
 else:
@@ -111,8 +111,7 @@ def predict(img):
         heatmap = make_gradcam_heatmap(img, model.model, "post_relu", ["global_average_pooling2d", "dense"])
     elif model_class == mod.efficentnetv2b0.EfficientNetV2B0Model:
         heatmap = make_gradcam_heatmap(img, model.model, "top_activation", ["global_average_pooling2d", "dropout", "dense"])
-    if not heatmap:
-        print("Heatmap is not defined, check if model is defined.")
+
     img_heatmap = save_and_display_gradcam(img_orig, heatmap)
 
     return ALL_CLASSES[np.argmax(predictions[0], axis=-1)], img_heatmap
@@ -124,4 +123,3 @@ demo = gr.Interface(
 )
 
 demo.launch()
-# python3 frontend.py --model mobilenet --size 96
