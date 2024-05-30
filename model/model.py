@@ -185,7 +185,7 @@ class Model:
         self.fit(save_best_model=True,
                  checkpoints_on_epochs=self.checkpoints_on_epochs)
 
-        score = self.model.evaluate()
+        score = self.evaluate()
         wandb.log({
             "score": score[1]
         })
