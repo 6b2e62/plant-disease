@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Optional
 
 import optuna
 import tensorflow as tf
@@ -29,8 +28,8 @@ class Model:
         self.ds_path = ds_path
         self.transfer_learning = transfer_learning
 
-        start_from_checkpoint = False,
-        checkpoints_on_epochs = False
+        self.start_from_checkpoint = False,
+        self.checkpoints_on_epochs = False
 
         self.wandb_settings = wandb.Settings(job_name=job_name)
 
@@ -127,18 +126,16 @@ class Model:
         ]
 
         if checkpoints_on_epochs:
-            checkpoint_filepath = f'checkpoint_{self.__class__.__name__}.weights.h5'
+            checkpoint_filepath = f'checkpoint_{self.__class__.__name__}.keras'
             model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
                 filepath=checkpoint_filepath,
-                save_weights_only=True,
                 monitor='val_accuracy',
                 save_freq='epoch'
             )
             wandb_callbacks.append(model_checkpoint_callback)
         if save_best_model:
             best_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
-                filepath=f'best_{self.__class__.__name__}.weights.h5',
-                save_weights_only=True,
+                filepath=f'best_{self.__class__.__name__}.keras',
                 monitor='val_accuracy',
                 save_best_only=True
             )
