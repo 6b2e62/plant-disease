@@ -5,7 +5,7 @@ from .model import Model
 class EfficientNetV2B0Model(Model):
     job_config = {
             "batch_size": 64,
-            "epoch": 5,
+            "epoch": 25,
             "learning_rate": 0.01,
             "optimizer": "sgd",
             "loss": "categorical_crossentropy",
@@ -15,7 +15,7 @@ class EfficientNetV2B0Model(Model):
     def build_model(self):
         return tf.keras.applications.EfficientNetV2B0(
             input_shape=self.input_shape,
-            include_top=False,
+            include_top=not self.transfer_learning,
             weights='imagenet',
             include_preprocessing=False
         )
