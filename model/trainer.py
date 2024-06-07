@@ -100,7 +100,7 @@ class Trainer:
         if self.start_from_checkpoint:
             self.model.load_weights(
                 f'checkpoint_{self.model.__class__.__name__}.keras')
-            
+
         print(f'Run job_config:\n\t{self.job_config}\n\n')
 
         return self.model.fit(
@@ -183,6 +183,10 @@ class Trainer:
             "score": score[1]
         })
 
+        if score[1] > self.score:
+            self.model.save(
+                f'best_score_{self.model.__class__.__name__}.keras')
+            self.score = score[1]
         return score[1]
 
     def __init_wandb(self):
