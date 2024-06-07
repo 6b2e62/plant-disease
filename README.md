@@ -45,3 +45,10 @@ export CUDNN_PATH="/home/username/.local/lib/python3.10/site-packages/nvidia/cud
 export LD_LIBRARY_PATH="$CUDNN_PATH/lib":"/usr/local/cuda-12.2/lib64"
 export PATH="$PATH":"/usr/local/cuda-12.2/bin"
 ```
+
+# Training models
+```bash
+python3 optuna_trainer.py --model mobilenet --with-checkpoints --size 96 
+
+python3 transfer_learning.py --model mobilenet --with-checkpoints --size 96
+```

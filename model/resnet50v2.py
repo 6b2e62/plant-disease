@@ -4,9 +4,9 @@ from .model import Model
 
 class Resnet50V2Model(Model):
     job_config = {
-        "batch_size": 64,
         "epochs": 15,
-        "learning_rate": 0.01,
+        "learning_rate": 0.001,
+        "batch_size": 64,
         "optimizer": "adam",
         "loss": "categorical_crossentropy",
         "metrics": ["accuracy"],
@@ -28,6 +28,6 @@ class Resnet50V2Model(Model):
         return tf.keras.applications.ResNet50V2(
             input_shape=self.input_shape,
             include_top=False,
-            weights="imagenet",
+            weights=self.weights,
         )
         
