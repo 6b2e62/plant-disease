@@ -1,11 +1,14 @@
-import gradio as gr
-import tensorflow as tf
-import numpy as np
-from dataset.consts import ALL_CLASSES
-from main import load_args, load_model
-import matplotlib as mpl
-import model as mod
 import os
+
+import gradio as gr
+import matplotlib as mpl
+import numpy as np
+import tensorflow as tf
+
+import model as mod
+from dataset.consts import ALL_CLASSES
+from model.trainer import Trainer
+from transfer_learning import load_args, load_model
 
 os.environ["WANDB_MODE"] = "offline"
 
@@ -13,16 +16,9 @@ args = load_args()
 model = load_model(args)
 model.load_weights(f"{args.model}_{args.size}.keras")
 
+preprocess_input = Trainer.choose_preprocess_fn(model)
 model_class = model.__class__
-if model_class == mod.mobilenetv2.MobilenetV2Model:
-    preprocess_input = tf.keras.applications.mobilenet_v2.preprocess_input
-elif model_class == mod.resnet50v2.Resnet50V2Model:
-    preprocess_input = tf.keras.applications.resnet_v2.preprocess_input
-elif model_class == mod.efficentnetv2b0.EfficientNetV2B0Model:
-    preprocess_input = tf.keras.applications.efficientnet_v2.preprocess_input
-else:
-    print("Model not recognized.")
-    exit(1)
+
 
 def make_gradcam_heatmap(
     img_array, model, last_conv_layer_name, classifier_layer_names
@@ -30,7 +26,8 @@ def make_gradcam_heatmap(
     # First, we create a model that maps the input image to the activations
     # of the last conv layer
     last_conv_layer = model.get_layer(last_conv_layer_name)
-    last_conv_layer_model = tf.keras.Model(model.inputs, last_conv_layer.output)
+    last_conv_layer_model = tf.keras.Model(
+        model.inputs, last_conv_layer.output)
 
     # Second, we create a model that maps the activations of the last conv
     # layer to the final class predictions
@@ -74,6 +71,7 @@ def make_gradcam_heatmap(
     heatmap = np.maximum(heatmap, 0) / np.max(heatmap)
     return heatmap
 
+
 def save_and_display_gradcam(img, heatmap, alpha=0.4):
     # Rescale heatmap to a range 0-255
     heatmap = np.uint8(255 * heatmap)
@@ -96,6 +94,7 @@ def save_and_display_gradcam(img, heatmap, alpha=0.4):
 
     return superimposed_img
 
+
 def predict(img):
     img = img.resize((int(args.size), int(args.size)))
     img = np.array(img)
@@ -106,15 +105,19 @@ def predict(img):
     predictions = model.predict(img)
 
     if model_class == mod.mobilenetv2.MobilenetV2Model:
-        heatmap = make_gradcam_heatmap(img, model.model, "out_relu", ["global_average_pooling2d", "dropout", "dense"])
+        heatmap = make_gradcam_heatmap(img, model.model, "out_relu", [
+                                       "global_average_pooling2d", "dropout", "dense"])
     elif model_class == mod.resnet50v2.Resnet50V2Model:
-        heatmap = make_gradcam_heatmap(img, model.model, "post_relu", ["global_average_pooling2d", "dense"])
+        heatmap = make_gradcam_heatmap(img, model.model, "post_relu", [
+                                       "global_average_pooling2d", "dense"])
     elif model_class == mod.efficentnetv2b0.EfficientNetV2B0Model:
-        heatmap = make_gradcam_heatmap(img, model.model, "top_activation", ["global_average_pooling2d", "dropout", "dense"])
+        heatmap = make_gradcam_heatmap(img, model.model, "top_activation", [
+                                       "global_average_pooling2d", "dropout", "dense"])
 
     img_heatmap = save_and_display_gradcam(img_orig, heatmap)
 
     return ALL_CLASSES[np.argmax(predictions[0], axis=-1)], img_heatmap
+
 
 demo = gr.Interface(
     predict,

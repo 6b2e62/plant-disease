@@ -39,7 +39,7 @@ class Trainer:
         self.model = model
         self.job_config = self.model.job_config
 
-        self.preprocess_fn = self.__choose_preprocess_fn(model)
+        self.preprocess_fn = self.choose_preprocess_fn(model)
 
         self.start_from_checkpoint = False
         self.checkpoints_on_epochs = False
@@ -212,7 +212,7 @@ class Trainer:
             1).as_numpy_iterator().next()[0].shape[1:]
 
     @staticmethod
-    def __choose_preprocess_fn(model: Model) -> callable:
+    def choose_preprocess_fn(model: Model) -> callable:
         '''
         Choose preprocess function based on the model.
         '''
