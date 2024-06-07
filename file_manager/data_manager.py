@@ -59,7 +59,7 @@ class DataManager:
             full_path_to_extract / "new plant diseases dataset(augmented)"
         )
         shutil.rmtree(full_path_to_extract / "test")
-        self.get_test_ds_from_validation()
+        self.get_test_ds_from_validation(50)
 
     def write_image(self, image, path):
         os.makedirs(path.rsplit('/', 1)[0], exist_ok=True)
