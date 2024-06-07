@@ -129,6 +129,7 @@ class Trainer:
         self.study = optuna.create_study(direction="maximize")
         self.score = 0
         optuna_objective = self.__optuna_objective
+        self.model.save('initial_weights.keras')
 
         optuna_callbacks = []
         wandbc = WeightsAndBiasesCallback(
@@ -170,7 +171,10 @@ class Trainer:
         keras.backend.clear_session()
 
         self.model.compile()
-        self.fit(start_from_checkpoint=self.start_from_checkpoint,
+
+        self.model.load_weights('initial_weights.keras')
+
+        self.fit(start_from_checkpoint=False,
                  save_best_model=True,
                  checkpoints_on_epochs=self.checkpoints_on_epochs)
 
