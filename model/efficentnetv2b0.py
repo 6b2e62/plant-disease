@@ -6,7 +6,7 @@ class EfficientNetV2B0Model(Model):
     job_config = {
             "batch_size": 64,
             "epoch": 25,
-            "learning_rate": 0.008,
+            "learning_rate": 0.001,
             "optimizer": "adam",
             "loss": "categorical_crossentropy",
             "metrics": ["accuracy"],
