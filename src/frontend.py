@@ -1,20 +1,30 @@
 import os
+import argparse
 
 import gradio as gr
 import matplotlib as mpl
 import numpy as np
 import tensorflow as tf
 
-import models as mod
 from dataset.consts import ALL_CLASSES
+from models.efficentnetv2b0 import EfficientNetV2B0Model
+from models.mobilenetv2 import MobilenetV2Model
+from models.resnet50v2 import Resnet50V2Model
 from trainer.trainer import Trainer
-from src.transfer_learning import load_args, load_model
+from transfer_learning import load_model
 
 os.environ["WANDB_MODE"] = "offline"
 
-args = load_args()
+parser = argparse.ArgumentParser()
+parser.add_argument('--model', type=str, choices=[
+    'resnet50', 'efficientnet', 'mobilenet'], help='Choose the type of model')
+parser.add_argument('--size', type=str, help='Choose dataset size')
+parser.add_argument('--path', type=str, required=True,
+                    help='Path to the model weights file')
+args = parser.parse_args()
+
 model = load_model(args)
-model.load_weights(f"weights/transfer_learning/resnet50v2_256.keras")
+model.load_weights(args.path)
 
 preprocess_input = Trainer.choose_preprocess_fn(model)
 model_class = model.__class__
@@ -104,13 +114,13 @@ def predict(img):
     img = preprocess_input(img)
     predictions = model.predict(img)
 
-    if model_class == mod.mobilenetv2.MobilenetV2Model:
+    if model_class == MobilenetV2Model:
         heatmap = make_gradcam_heatmap(img, model.model, "out_relu", [
                                        "global_average_pooling2d", "dropout", "dense"])
-    elif model_class == mod.resnet50v2.Resnet50V2Model:
+    elif model_class == Resnet50V2Model:
         heatmap = make_gradcam_heatmap(img, model.model, "post_relu", [
                                        "global_average_pooling2d", "dense"])
-    elif model_class == mod.efficentnetv2b0.EfficientNetV2B0Model:
+    elif model_class == EfficientNetV2B0Model:
         heatmap = make_gradcam_heatmap(img, model.model, "top_activation", [
                                        "global_average_pooling2d", "dropout", "dense"])
 

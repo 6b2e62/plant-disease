@@ -40,10 +40,14 @@ create-efficientnet-job:
 create-resnet50-job:
 	wandb job create --project $(PROJECT) --entity $(ENTITY) --name "resnet50" git git@github.com:6b2e62/plant-disease.git --entry-point "python3 main.py --model resnet50"
 
-# f.e. make run-optuna PARAMS='--model mobilenet --size 96 --trials 10 --with-checkpoints'
+# e. g. make run-optuna PARAMS='--model mobilenet --size 96 --trials 10 --with-checkpoints'
 run-optuna:
 	python3 src/optuna_trainer.py ${PARAMS}
 
-# f.e. make run-transfer-learning PARAMS='--model mobilenet --size 96 --epochs 10 --with-checkpoints'
+# e. g. make run-transfer-learning PARAMS='--model mobilenet --size 96 --epochs 10 --with-checkpoints'
 run-transfer-learning:
 	python3 src/transfer_learning.py ${PARAMS}
+
+# e.g. make run-frontend PARAMS='--model resnet50 --size 256 --path weights/transfer_learning/resnet50v2_256.keras'
+run-frontend:
+	python3 src/frontend.py ${PARAMS}
