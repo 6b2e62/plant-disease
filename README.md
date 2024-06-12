@@ -58,7 +58,7 @@ Dane w tabeli pochodzą z [dokumentacji keras](https://keras.io/api/applications
 Do realizacji każdego z elementów skorzystaliśmy z następujących technologii
 - WanDB - do śledzenia eksperymentów i wizualizacji predykcji
 - Optune - hiperparametryzacja
-- Tensorflow - implementacja modeli, ładowanie datasetów
+- Tensorflow - implementacja modeli, ładowanie datasetów, transfer learning
 - Implementacja od zera - pobieranie danych, gradient, grayscale, resize
 
 ## Augmentacja danych
