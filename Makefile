@@ -6,16 +6,16 @@ PROJECT = "Detection of plant diseases"
 ENTITY = "uczenie-maszynowe-projekt"
 
 download-dataset:
-	python3 ./file_manager/file_manager.py --download --unzip
+	python3 src/file_manager/file_manager.py --download --unzip
 
 unzip-dataset:
-	python3 ./file_manager/file_manager.py --unzip
+	python3 src/file_manager/file_manager.py --unzip
 
 resize-dataset:
-	python3 ./file_manager/file_manager.py --resize --shape 96 96 --source "original_dataset"
+	python3 src/file_manager/file_manager.py --resize --shape 96 96 --source "original_dataset"
 
 sobel-dataset:
-	python3 ./file_manager/file_manager.py --sobel --source "resized_dataset"
+	python3 src/file_manager/file_manager.py --sobel --source "resized_dataset"
 
 login:
 	wandb login $$(cat "$$API_KEY_SECRET")
