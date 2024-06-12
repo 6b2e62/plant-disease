@@ -16,7 +16,7 @@ https://www.kaggle.com/datasets/vipoooool/new-plant-diseases-dataset
 | Niewystarczające zasoby czasowe    | Średnie  | Wybór podzbioru z dostępnych danych żeby przyspieszyć czas uczenia  |
 | Problemy integracyjne              | Niskie   | Wykorzystanie Optune zamiast WanDB sweeps, implementacja "manualna" |
 | Niewystarczająca liczba danych     | Niskie   | Augmentacja danych                                                  |
-| Niewystarczająca jakość danych     | Średnie  | Augmentacja danych, douczenie modelu na podstawie innego zbioru     |
+| Niewystarczająca jakość danych     | Średnie  | Augmentacja danych, douczenie modelu na podstawie innego zbioru, [alternatywny zbiór danych](https://github.com/pratikkayal/PlantDoc-Dataset)    |
 
 ## Założenia vs co udalo się zrealizować
 
