@@ -6,7 +6,31 @@ Projekt był realizowany na zajęcia z inżynierii uczenia maszynowego na Uniwer
 
 ## Źródło danych
 
-https://www.kaggle.com/datasets/vipoooool/new-plant-diseases-dataset 
+https://www.kaggle.com/datasets/vipoooool/new-plant-diseases-dataset
+
+## Ocena ryzyka
+
+| Problem                            | Ryzyko   | Alternatywa                                                         |
+|------------------------------------|----------|---------------------------------------------------------------------|
+| Niewystarczające zasoby sprzętowe  | Wysokie  | Google Colab Pro                                                    |
+| Niewystarczające zasoby czasowe    | Średnie  | Wybór podzbioru z dostępnych danych żeby przyspieszyć czas uczenia  |
+| Problemy integracyjne              | Niskie   | Wykorzystanie Optune zamiast WanDB sweeps, implementacja "manualna" |
+| Niewystarczająca liczba danych     | Niskie   | Augmentacja danych                                                  |
+| Niewystarczająca jakość danych     | Średnie  | Augmentacja danych, douczenie modelu na podstawie innego zbioru     |
+
+## Założenia vs co udalo się zrealizować
+
+| Założenia                                                                  | Zrealizowane?      | Komentarz                                                                            |
+|----------------------------------------------------------------------------|--------------------|--------------------------------------------------------------------------------------|
+| Przygotowanie danych i modułu do ich przetwarzania                         | Tak                |                                                                                      |
+| Przygotowanie modeli ResNetV50, MobileNetV2, EfficientNetV2B0              | Tak                |                                                                                      |
+| Moduł do ładowania plików                                                  | Tak                |                                                                                      |
+| Moduł do obslugi i uruchaminia WanDB Jobs (queues)                         | Nie                | Szczegóły opisane w sekcji "Napotkane problemy > WanDB"                              |
+| Eskperymenty, dobieranie hiperparametrów, różne sposoby augmentacji danych | Tak                | Szczęgóły opisane w sekcjach "augmentacja danych" oraz "przeprowadzone eksperymenty" |
+| Przygotowanie aplikacji na cele demonstracyjne - frontend                  | Tak                |                                                                                      |
+| Dodanie heatmap'y do modelu (CAM) i frontendu                              | Tak                |                                                                                      |
+| Wybór najlepszego modelu                                                   | Tak                |                                                                                      |
+| Modul do obslugi Sweeps - automatycznego dobierania hiperparametrów        | Tak, z modyfikacją | Wykorzystaliśmy Optune zamiast wbudowanego modułu Sweeps.                            |
 
 ## Dokumentacja systemu
 
@@ -70,17 +94,17 @@ Dane były augmentowane z użyciem następujących technik:
     - Model Jest bardzo podatny na wyróżniające się kolory na zdjęciu​
     - Jest podatny na elementy poza kadrem
 
-## Dalsze kroki - jak naprawić istniejące problemy?
+## Dalsze kroki - co można zrobić lepiej, więcej?
 
-Głównym problemem jest zbiór danych, który jest bardzo "laboratoryjny" przez co nie reprezentuje dobrze zdjęć wykonywanych "z ręki". Aby rozwiązać problem z danymi potrzebowalibyśmy:
+1. Głównym problemem jest zbiór danych, który jest bardzo "laboratoryjny" przez co nie reprezentuje dobrze zdjęć wykonywanych "z ręki". Aby rozwiązać problem z danymi potrzebowalibyśmy:
 - Fotografie zdjęć pod różnymi kątami​
 - Fotografie o różnych porach dnia​
 - Fotografie z różnymi warunkami pogodowymi (słońce, chmury)​
 - Fotografie przed i po podlewaniu​
 - Fotografie z różnorodnym tłem
 - Fotografie w cieniu / na słońcu
-
-W trakcie augmentacji danych, dokonujemy rotacji o pewien kąt, co zostawia czasem czarne rogi na obrazkach. Moglibyśmy ten problem rozwiązać używając np. Segment Anything do wycięcia tła i podmienić je na wiele różnorodnych opcji.
+2. W trakcie augmentacji danych, dokonujemy rotacji o pewien kąt, co zostawia czasem czarne rogi na obrazkach. Moglibyśmy ten problem rozwiązać używając np. Segment Anything do wycięcia tła i podmienić je na wiele różnorodnych opcji.
+3. Dobrymi modelami do rozwązenia się również MobileNetV4, FOMO
 
 ## Napotkane problemy
 
@@ -94,7 +118,7 @@ W trakcie augmentacji danych, dokonujemy rotacji o pewien kąt, co zostawia czas
 
 ### Problemy z danymi
 
-- Użyte zostały bardzo konkretne gatunki poszczególnych roślin - np. liście jabłka są bardzo ciemne​
+- Użyte zostały bardzo konkretne gatunki poszczególnych roślin, np. liście jabłka są bardzo ciemne​
 - Zdjęcia są stosunkowo niskiej jakości​
 - Zdjęcia nie odwzorowują dobrze roślin na żywo​
 - Każde zdjęcie zostało wykonane pod +- tym samym kątem
@@ -129,7 +153,11 @@ Google Colab (z GPU T4)​ ograniczony jest do 12GB RAM systemowego, jest to pro
 - [Prezentacja prezentowana na ostatnich zajęciach](https://uam-my.sharepoint.com/:p:/r/personal/krzboj_st_amu_edu_pl/_layouts/15/doc.aspx?sourcedoc=%7Bab618fdf-5e98-4cf7-aa49-ea13fa807f4e%7D&action=edit)
 - [Dokumentacja robocza, która zawiera całą historie prac i podejmowanych decyzji](https://uam-my.sharepoint.com/personal/krzboj_st_amu_edu_pl/_layouts/15/doc.aspx?sourcedoc={dc695bbe-68d1-4947-8c29-1d008f252a3b}&action=edit)
 
-# Setup
+<br/><br/><br/><br/>
+
+# Część techniczna - uruchamianie projektu
+
+## Docker
 
 1. Install Docker on your local system.
 2. To build docker image and run the shell, use Makefile
@@ -149,7 +177,7 @@ docker build -t gpu api_key="<wandb_api_key>" .
 docker run --rm -it --gpus all --entrypoint /bin/bash gpu
 ```
 
-# Local WSL CUDA
+## Local WSL CUDA
 
 It might be required to export environment variables after CUDA toolkit installation. Check `Dockerfile` as an example.
 
@@ -159,9 +187,8 @@ export LD_LIBRARY_PATH="$CUDNN_PATH/lib":"/usr/local/cuda-12.2/lib64"
 export PATH="$PATH":"/usr/local/cuda-12.2/bin"
 ```
 
-# Training models
+## Training models
 ```bash
 python3 optuna_trainer.py --model mobilenet --with-checkpoints --size 96 
-
 python3 transfer_learning.py --model mobilenet --with-checkpoints --size 96
 ```
