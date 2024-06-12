@@ -29,7 +29,7 @@ Dane w tabeli pochodzą z [dokumentacji keras](https://keras.io/api/applications
 
 ## Machine Learning pipeline
 
-![alt text](image.png)
+![Machine Learning Pipeline](ml_pipeline.png)
 
 Do realizacji każdego z elementów skorzystaliśmy z następujących technologii
 - WanDB - do śledzenia eksperymentów i wizualizacji predykcji
