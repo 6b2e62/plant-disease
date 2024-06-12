@@ -1,6 +1,7 @@
 .PHONY: download-dataset unzip-dataset resize-dataset sobel-dataset login
 .PHONY: docker-run docker-build check-gpu
 .PHONY: create-mobilenet-job create-efficientnet-job create-resnet50-job
+.PHONY: run-optuna run-transfer-learning
 
 PROJECT = "Detection of plant diseases"
 ENTITY = "uczenie-maszynowe-projekt"
