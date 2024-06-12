@@ -2,11 +2,12 @@ import argparse
 import glob
 import os
 import shutil
-from pathlib import Path
 import zipfile
-from tqdm import tqdm
-import gdown
+from pathlib import Path
+
 import cv2
+import gdown
+from tqdm import tqdm
 
 main_path = Path("data/")
 path_to_train_and_valid = main_path / "%s/**/*.*"
@@ -15,6 +16,8 @@ original_dataset_name = "original_dataset"
 parser = argparse.ArgumentParser()
 parser.add_argument("--download", action="store_true",
                     help="Download the data")
+parser.add_argument("--unzip", action="store_true",
+                    help="Unzip the data")
 parser.add_argument("--resize", action="store_true",
                     help="Resize the dataset")
 parser.add_argument("--shape", type=int, nargs="+", default=(64, 64),
@@ -26,12 +29,13 @@ parser.add_argument("--source", type=str, default="original_dataset",
 args = parser.parse_args()
 
 
-class DataManager:
+class FileManager:
 
     def download_data(self):
         print("Downloading")
         if not os.path.isfile("archive.zip"):
-            gdown.download(id="1uyNbOYfdpYe777EqfR2yDXgJ8tMOvZFW", output="archive.zip")
+            gdown.download(id="1uyNbOYfdpYe777EqfR2yDXgJ8tMOvZFW",
+                           output="archive.zip")
 
     def unzip_data(self, file_name, path_to_extract):
         full_path_to_extract = main_path / path_to_extract
@@ -39,35 +43,50 @@ class DataManager:
         if not os.path.exists(main_path):
             os.makedirs(main_path)
 
-        print("Extracting")
         with zipfile.ZipFile(file_name) as zf:
-            for member in tqdm(zf.infolist(), desc='Extracting'):
+            members_to_extract = [member for member in zf.infolist(
+            ) if member.filename.startswith(old_path)]
+
+            for member in tqdm(members_to_extract, desc='Extracting'):
                 try:
                     zf.extract(member, full_path_to_extract)
                 except zipfile.error as e:
-                    pass
-        # shutil.move("data/test/test",
-        #             full_path_to_extract, copy_function=shutil.copytree)
+                    raise e
+
         shutil.move(full_path_to_extract / old_path / "train",
-                    full_path_to_extract / "train", copy_function=shutil.copytree)
-        shutil.move(full_path_to_extract / old_path / "valid",
-                    full_path_to_extract / "valid", copy_function=shutil.copytree)
+                    full_path_to_extract / "train_valid", copy_function=shutil.copytree)
+        shutil.copytree(full_path_to_extract / old_path / "valid",
+                        full_path_to_extract / "train_valid", dirs_exist_ok=True)
         shutil.rmtree(
             full_path_to_extract / "New Plant Diseases Dataset(Augmented)"
         )
-        shutil.rmtree(
-            full_path_to_extract / "new plant diseases dataset(augmented)"
-        )
-        shutil.rmtree(full_path_to_extract / "test")
-        self.get_test_ds_from_validation(50)
+        self.get_test_ds(100)
+        self.reduce_ds_size()
+        self.train_valid_split()
 
     def write_image(self, image, path):
         os.makedirs(path.rsplit('/', 1)[0], exist_ok=True)
         cv2.imwrite(path, image)
 
-    def get_test_ds_from_validation(self, files_per_category: int = 2):
+    def reduce_ds_size(self, files_per_category: int = 1000):
         path_to_extract = main_path / original_dataset_name
-        valid_ds = glob.glob(str(path_to_extract / "valid/*/*"))
+        valid_ds = glob.glob(str(path_to_extract / "train_valid/*/*"))
+
+        category_dirs = set([category_dir.split("/")[-2]
+                            for category_dir in valid_ds])
+        category_lists = {category: [] for category in category_dirs}
+        for file_path in valid_ds:
+            category = file_path.split("/")[-2]
+            category_lists[category].append(file_path)
+
+        for category, files in category_lists.items():
+            files.sort()
+            for file in files[files_per_category-1:]:
+                os.remove(file)
+
+    def get_test_ds(self, files_per_category: int = 2):
+        path_to_extract = main_path / original_dataset_name
+        valid_ds = glob.glob(str(path_to_extract / "train_valid/*/*"))
 
         category_dirs = set([category_dir.split("/")[-2]
                             for category_dir in valid_ds])
@@ -85,6 +104,34 @@ class DataManager:
             files.sort()
             for file in files[:files_per_category]:
                 shutil.move(file, test_dir / category)
+
+    def train_valid_split(self, split_ratio=0.8):
+        path_to_extract = main_path / original_dataset_name
+        ds = glob.glob(str(path_to_extract / "train_valid/*/*"))
+
+        category_dirs = set([category_dir.split("/")[-2]
+                            for category_dir in ds])
+        category_lists = {category: [] for category in category_dirs}
+        for file_path in ds:
+            category = file_path.split("/")[-2]
+            category_lists[category].append(file_path)
+
+        train_dir = path_to_extract / "train"
+        valid_dir = path_to_extract / "valid"
+        if not os.path.exists(train_dir):
+            os.makedirs(train_dir, exist_ok=True)
+        if not os.path.exists(valid_dir):
+            os.makedirs(valid_dir, exist_ok=True)
+
+        for category, files in category_lists.items():
+            os.makedirs(train_dir / category, exist_ok=True)
+            os.makedirs(valid_dir / category, exist_ok=True)
+            files.sort()
+            split_index = int(len(files) * split_ratio)
+            for file in files[:split_index]:
+                shutil.move(file, train_dir / category)
+            for file in files[split_index:]:
+                shutil.move(file, valid_dir / category)
 
     def resize_dataset(self, source_dataset_name, shape):
         dataset_name = "resized_dataset_%s_%s"
@@ -116,11 +163,12 @@ class DataManager:
 
 
 if __name__ == "__main__":
-    data_manager = DataManager()
+    file_manager = FileManager()
     if args.download:
-        data_manager.download_data()
-        data_manager.unzip_data("archive.zip", original_dataset_name)
+        file_manager.download_data()
+    if args.unzip:
+        file_manager.unzip_data("archive.zip", original_dataset_name)
     if args.resize:
-        data_manager.resize_dataset(args.source, tuple(args.shape))
+        file_manager.resize_dataset(args.source, tuple(args.shape))
     if args.sobel:
-        data_manager.sobelx(args.source)
+        file_manager.sobelx(args.source)
