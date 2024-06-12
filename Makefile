@@ -1,6 +1,7 @@
 .PHONY: download-dataset unzip-dataset resize-dataset sobel-dataset login
 .PHONY: docker-run docker-build check-gpu
 .PHONY: create-mobilenet-job create-efficientnet-job create-resnet50-job
+.PHONY: run-optuna run-transfer-learning
 
 PROJECT = "Detection of plant diseases"
 ENTITY = "uczenie-maszynowe-projekt"
@@ -38,3 +39,11 @@ create-efficientnet-job:
 
 create-resnet50-job:
 	wandb job create --project $(PROJECT) --entity $(ENTITY) --name "resnet50" git git@github.com:6b2e62/plant-disease.git --entry-point "python3 main.py --model resnet50"
+
+# f.e. make run-optuna PARAMS='--model mobilenet --size 96 --trials 10 --with-checkpoints'
+run-optuna:
+	python3 src/optuna_trainer.py ${PARAMS}
+
+# f.e. make run-transfer-learning PARAMS='--model mobilenet --size 96 --epochs 10 --with-checkpoints'
+run-transfer-learning:
+	python3 src/transfer_learning.py ${PARAMS}
