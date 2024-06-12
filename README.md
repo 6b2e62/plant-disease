@@ -90,21 +90,21 @@ Dane były augmentowane z użyciem następujących technik:
 - Model działa z doskonałą skutecznością >= 98% na danych testowych. Zarówno w wykrywaniu gatunku rośliny jak i choroby.
 - W przypadku zdjęc z internetu lub z telefonu model dobrze radzi sobie z rozpoznawaniem roślin​. Jednakże często wystawia błędną diagnozę​ choroby.
 - Przez analizę heatmap'y możemy zaobserwować, że 
-    - Model jest bardzo podatny na zmianę kolorów (np. ciemny lub jasny liść)​
-    - Model Jest bardzo podatny na wyróżniające się kolory na zdjęciu​
-    - Jest podatny na elementy poza kadrem
+    - model jest bardzo podatny na zmianę kolorów (np. ciemny lub jasny liść)​
+    - model Jest bardzo podatny na wyróżniające się kolory na zdjęciu​
+    - jest podatny na elementy poza kadrem
 
 ## Dalsze kroki - co można zrobić lepiej, więcej?
 
 1. Głównym problemem jest zbiór danych, który jest bardzo "laboratoryjny" przez co nie reprezentuje dobrze zdjęć wykonywanych "z ręki". Aby rozwiązać problem z danymi potrzebowalibyśmy:
-- Fotografie zdjęć pod różnymi kątami​
-- Fotografie o różnych porach dnia​
-- Fotografie z różnymi warunkami pogodowymi (słońce, chmury)​
-- Fotografie przed i po podlewaniu​
-- Fotografie z różnorodnym tłem
-- Fotografie w cieniu / na słońcu
+- fotografie zdjęć pod różnymi kątami​
+- fotografie o różnych porach dnia​
+- fotografie z różnymi warunkami pogodowymi (słońce, chmury)​
+- fotografie przed i po podlewaniu​
+- fotografie z różnorodnym tłem
+- fotografie w cieniu / na słońcu
 2. W trakcie augmentacji danych, dokonujemy rotacji o pewien kąt, co zostawia czasem czarne rogi na obrazkach. Moglibyśmy ten problem rozwiązać używając np. Segment Anything do wycięcia tła i podmienić je na wiele różnorodnych opcji.
-3. Dobrymi modelami do rozwązenia się również MobileNetV4, FOMO
+3. Dobrymi modelami do rozważenia się również MobileNetV4, FOMO
 
 ## Napotkane problemy
 
@@ -112,13 +112,14 @@ Dane były augmentowane z użyciem następujących technik:
 
 - Bardzo słaba dokumentacja
 - WanDB oferują opcję kolejkowania zadań, które mogą być wykonywane przez wielu agentów jednocześnie. Niestety wymagane są uprawnienia administratora oraz Docker, dlatego nie mogliśmy tego wykorzystać na Google Colab ani na maszynach uczelnianych.
-- WanDB oferuję opcję hiperparametryzacji modeli (Sweeps). Moduł sweeps Łączy się z modułem opisanym powyżej, co sprawia, że też nie mogliśmy tego użyć.
+- WanDB oferuję opcję hiperparametryzacji modeli (Sweeps). Moduł sweeps Łączy się z modułem opisanym powyżej, co sprawia, że też nie mogliśmy go użyć.
 - Model Registry​ - bardzo niewygodny w obsłudze, łatwiej jest przechowywać modele w chmurze albo w repozytorium.
 - Nieczytelny UI
 
 ### Problemy z danymi
 
 - Użyte zostały bardzo konkretne gatunki poszczególnych roślin, np. liście jabłka są bardzo ciemne​
+- Zdjęcia są bardzo słabo oświetlone, albo oświetlone światłem sztucznym
 - Zdjęcia są stosunkowo niskiej jakości​
 - Zdjęcia nie odwzorowują dobrze roślin na żywo​
 - Każde zdjęcie zostało wykonane pod +- tym samym kątem
@@ -127,7 +128,7 @@ Dane były augmentowane z użyciem następujących technik:
 
 #### Zasoby sprzętowe​
 
-- Nvidia (3070, 4050M, 3060TI) 6-8GB GPU RAM wystarcza na transfer learning wybranych modeli oraz na uczenie MobileNetV2 od zera​
+- Nvidia (3070, 4050M, 3060TI) 6-8GB GPU RAM wystarcza na transfer learning wybranych modeli oraz na uczenie MobileNetV2 od zera​, dla modelu ResNet50V2 nie jest to wystarczająca konfiguracja
 - AMD (Radeon 7800XT) nie nadaje się do uczenia maszynowego, nie udało się go uruchomić
 
 #### Google Colab
