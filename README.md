@@ -85,7 +85,7 @@ Dane były augmentowane z użyciem następujących technik:
 |------------------|----------------|--------------------|------------|----------------|---------|
 | MobileNetV2      | 0.999          | 0.9517             | 0.00359    | 0.1877         |[Link]()|
 | ResNet50V2       | 0.9822         | 0.9627             | 0.1107     | 0.3850         |[Link](https://wandb.ai/uczenie-maszynowe-projekt/Detection%20of%20plant%20diseases/runs/9fovuq7x)|
-| EfficientNetV2B0 | 0.9827         | 0.9888             | 0.0496     | 0.0348         |[Link]()|
+| EfficientNetV2B0 | 0.9827         | 0.9888             | 0.0496     | 0.0348         |[Link](https://wandb.ai/uczenie-maszynowe-projekt/Detection%20of%20plant%20diseases/runs/bt94aibu?nw=nwusersergiuszkanski)|
 
 ## Najlepsze uzyskane wyniki z uczeniem od 0
 
