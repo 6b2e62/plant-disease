@@ -82,9 +82,16 @@ Dane były augmentowane z użyciem następujących technik:
 
 | Model            | batch/accuracy | epoch/val_accuracy | batch/loss | epoch/val_loss | Raporty |
 |------------------|----------------|--------------------|------------|----------------|---------|
-| MobileNetV2      | 0.999          | 0.9517             | 0.00359    | 0.1877         |[Link](https://wandb.ai/uczenie-maszynowe-projekt/Detection%20of%20plant%20diseases/runs/9fovuq7x)|
-| ResNet50V2       | 0.9828         | 0.9527             | 0.1169     | 0.5601         |[Link](https://wandb.ai/uczenie-maszynowe-projekt/Detection%20of%20plant%20diseases/runs/8e2ha5p4)|
-| EfficientNetV2B0 | 0.9827         | 0.9888             | 0.0496     | 0.0348         |[Link](https://wandb.ai/uczenie-maszynowe-projekt/Detection%20of%20plant%20diseases/runs/bt94aibu)|
+| MobileNetV2      | 0.999          | 0.9517             | 0.00359    | 0.1877         |[Link]()|
+| ResNet50V2       | 0.9822         | 0.9627             | 0.1107     | 0.3850         |[Link](https://wandb.ai/uczenie-maszynowe-projekt/Detection%20of%20plant%20diseases/runs/9fovuq7x)|
+| EfficientNetV2B0 | 0.9827         | 0.9888             | 0.0496     | 0.0348         |[Link]()|
+
+## Najlepsze uzyskane wyniki z uczeniem od 0
+
+| Model            | batch/accuracy | epoch/val_accuracy | batch/loss | epoch/val_loss | Raporty |
+|------------------|----------------|--------------------|------------|----------------|---------|
+| ResNet50V2       | 0.9820         | 0.9723             | 0.0515     | 0.0862         |[Link](https://wandb.ai/uczenie-maszynowe-projekt/Detection%20of%20plant%20diseases/runs/hhuy25mw)|
+
 
 ## Finalne wyniki
 
