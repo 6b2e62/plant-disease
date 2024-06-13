@@ -25,8 +25,8 @@ https://www.kaggle.com/datasets/vipoooool/new-plant-diseases-dataset
 | Przygotowanie danych i modułu do ich przetwarzania                         | Tak                |                                                                                      |
 | Przygotowanie modeli ResNetV50, MobileNetV2, EfficientNetV2B0              | Tak                |                                                                                      |
 | Moduł do ładowania plików                                                  | Tak                |                                                                                      |
-| Moduł do obslugi i uruchaminia WanDB Jobs (queues)                         | Nie                | Szczegóły opisane w sekcji "Napotkane problemy > WanDB"                              |
-| Eskperymenty, dobieranie hiperparametrów, różne sposoby augmentacji danych | Tak                | Szczęgóły opisane w sekcjach "augmentacja danych" oraz "przeprowadzone eksperymenty" |
+| Moduł do obslugi i uruchaminia WanDB Jobs (queues)                         | Nie                | Szczegóły opisane w sekcji ["Napotkane problemy > WanDB"](#wandb)                              |
+| Eskperymenty, dobieranie hiperparametrów, różne sposoby augmentacji danych | Tak                | Szczęgóły opisane w sekcjach ["augmentacja danych"](##augmentacja-danych) oraz ["przeprowadzone eksperymenty"](#przeprowadzone-eksperymenty) |
 | Przygotowanie aplikacji na cele demonstracyjne - frontend                  | Tak                |                                                                                      |
 | Dodanie heatmap'y do modelu (CAM) i frontendu                              | Tak                |                                                                                      |
 | Wybór najlepszego modelu                                                   | Tak                |                                                                                      |
