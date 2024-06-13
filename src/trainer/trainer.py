@@ -135,7 +135,7 @@ class Trainer:
         self.study = optuna.create_study(direction="maximize")
         self.score = 0
         optuna_objective = self.__optuna_objective
-        self.model.save('initial_weights.keras')
+        self.model.save('tmp/initial_weights.keras')
 
         optuna_callbacks = []
         wandbc = WeightsAndBiasesCallback(
@@ -178,7 +178,7 @@ class Trainer:
 
         self.model.compile()
 
-        self.model.load_weights('initial_weights.keras')
+        self.model.load_weights('tmp/initial_weights.keras')
 
         self.fit(start_from_checkpoint=False,
                  save_best_model=True,
