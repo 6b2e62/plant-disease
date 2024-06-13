@@ -217,9 +217,10 @@ flowchart BT
 ```
 
 ### Druga próba
-Z jednym AveragePoolingiem2D i Droputem
+Z jednym AveragePoolingiem2D i Dropoutem
 
 [Link do raportu](https://wandb.ai/uczenie-maszynowe-projekt/Detection%20of%20plant%20diseases/reports/Double-output-with-shared-AveragePooling2D--Vmlldzo4MzI0ODQy?accessToken=am8kip66ed4995grdj21t52gg5alt12dzeq90gpr0bwm68lci8vucp8tqelrby82)
+
 ```mermaid
 flowchart BT
     A[/Input\] --> B{{MobileNet}}
@@ -235,6 +236,10 @@ flowchart BT
 
 ### Trzecia próba
 Z dodaniem wyjścia plant do disease poprzez warstwę konkatenacji
+
+
+[Link do raportu](https://wandb.ai/uczenie-maszynowe-projekt/Detection%20of%20plant%20diseases/reports/Double-output-with-concatenated-plant-output--Vmlldzo4MzI2MDE2?accessToken=by6btrvn41ufke43j6a7vwovnyde36vpmzfa6ep04b79350xovysba9e27sdi6jd)
+
 ```mermaid
 flowchart BT
     A[/Input\] --> B{{MobileNet}}
