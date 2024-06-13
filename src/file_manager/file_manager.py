@@ -34,7 +34,7 @@ class FileManager:
     def download_data(self):
         print("Downloading")
         if not os.path.isfile("archive.zip"):
-            gdown.download(id="1uyNbOYfdpYe777EqfR2yDXgJ8tMOvZFW",
+            gdown.download(id="1IB9T0MTYcF_MIR7_AAjQItWUbvqDMq7c",
                            output="archive.zip")
 
     def unzip_data(self, file_name, path_to_extract):
