@@ -193,3 +193,49 @@ export PATH="$PATH":"/usr/local/cuda-12.2/bin"
 python3 optuna_trainer.py --model mobilenet --with-checkpoints --size 96 
 python3 transfer_learning.py --model mobilenet --with-checkpoints --size 96
 ```
+
+## Obsługa wielu wyjść
+
+### Pierwsza próba
+Z osobnymi warstwami AveragePooling2D
+```mermaid
+graph BT
+    A[Input] --> B(MobileNet)
+    B --> C[GlobalAveragePooling2D]
+    C --> D[Dropout 0.3]
+    D --> E(Dense Plant 14 classes)
+    B --> F[GlobalAveragePooling2D]
+    F --> G[Dropout 0.3]
+    G --> H(Dense Diseases 21 classes)
+    E --> I[Output]
+    H --> I
+```
+
+### Druga próba
+Z jednym AveragePoolingiem2D i Droputem
+```mermaid
+graph BT
+    A[Input] --> B(MobileNet)
+    B --> C[GlobalAveragePooling2D]
+    C --> D[Dropout 0.15]
+    D --> E(Dense Plant 14 classes)
+    D --> H(Dense Diseases 21 classes)
+    E --> I[Output]
+    H --> I
+```
+
+### Trzecia próba
+Z dodaniem wyjścia plant do disease poprzez warstwę konkatenacji
+```mermaid
+graph BT
+    A[Input] --> B(MobileNet)
+    B --> C[GlobalAveragePooling2D]
+    C --> D[Dropout 0.15]
+    D --> E(Dense Plant 14 classes)
+    E --> CONCAT[Concatenate]
+    C --> CONCAT
+    CONCAT --> H[Dropout 0.15]
+    H --> I(Dense Diseases 21 classes)
+    E --> J[Output]
+    I --> J
+```
