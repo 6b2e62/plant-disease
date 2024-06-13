@@ -198,6 +198,9 @@ python3 transfer_learning.py --model mobilenet --with-checkpoints --size 96
 
 ### Pierwsza próba
 Z osobnymi warstwami AveragePooling2D
+
+[Link do raportu](https://api.wandb.ai/links/uczenie-maszynowe-projekt/qjdqr2xx)
+
 ```mermaid
 graph BT
     A[Input] --> B(MobileNet)
@@ -210,7 +213,6 @@ graph BT
     E --> I[Output]
     H --> I
 ```
-[Link do raportu](https://api.wandb.ai/links/uczenie-maszynowe-projekt/qjdqr2xx)
 
 ### Druga próba
 Z jednym AveragePoolingiem2D i Droputem
