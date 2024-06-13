@@ -77,6 +77,7 @@ Dane były augmentowane z użyciem następujących technik:
 | Transfer learning z różnymi filtrami             | grayscale, gradient                      | Filtry nie mają pozytywnego wpływu na działanie modeli i proces uczenia.                                                                                           |
 | Sposób uczenia                                   | Transfer learning, training from scratch | W obu przypadkach uzyskujemy bardzo wysokie accuracy (>90%), jednakże w przypadku transfer learning'u możemy zaobserwować, że heatmap'y skupiają się na bardziej istotnych cecach. |
 | Klasyfikacja z użyciem wielu wyjść               | 2 outputy, GlobalAveragePooling, Dropout, kombinacje | [Opisane w sekcji technicznej](#training-models)
+| Douczenie modelu za pomocą alternatywnego datasetu | Transfer learning z najlepszego modelu, który uzyskaliśmy wcześniej | Model zaczął bardziej się skupiać na liściach, widać poprawę w ocenie chorób, jednakże kosztem klasyfikacji rośliny.
 
 ## Najlepsze uzyskane wyniki z transfer learningu
 
