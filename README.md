@@ -202,36 +202,42 @@ Z osobnymi warstwami AveragePooling2D
 [Link do raportu](https://api.wandb.ai/links/uczenie-maszynowe-projekt/qjdqr2xx)
 
 ```mermaid
-graph BT
-    A[Input] --> B(MobileNet)
+flowchart BT
+    A[/Input\] --> B{{MobileNet}}
     B --> C[GlobalAveragePooling2D]
     C --> D[Dropout 0.3]
     D --> E(Dense Plant 14 classes)
     B --> F[GlobalAveragePooling2D]
     F --> G[Dropout 0.3]
     G --> H(Dense Diseases 21 classes)
-    E --> I[Output]
-    H --> I
+    E --> I:::hidden
+    H --> J:::hidden
+
+    classDef hidden display: none;
 ```
 
 ### Druga próba
 Z jednym AveragePoolingiem2D i Droputem
+
+[Link do raportu](https://wandb.ai/uczenie-maszynowe-projekt/Detection%20of%20plant%20diseases/reports/Double-output-with-shared-AveragePooling2D--Vmlldzo4MzI0ODQy?accessToken=am8kip66ed4995grdj21t52gg5alt12dzeq90gpr0bwm68lci8vucp8tqelrby82)
 ```mermaid
-graph BT
-    A[Input] --> B(MobileNet)
+flowchart BT
+    A[/Input\] --> B{{MobileNet}}
     B --> C[GlobalAveragePooling2D]
     C --> D[Dropout 0.15]
     D --> E(Dense Plant 14 classes)
     D --> H(Dense Diseases 21 classes)
-    E --> I[Output]
-    H --> I
+    E --> I:::hidden
+    H --> J:::hidden
+
+    classDef hidden display: none;
 ```
 
 ### Trzecia próba
 Z dodaniem wyjścia plant do disease poprzez warstwę konkatenacji
 ```mermaid
-graph BT
-    A[Input] --> B(MobileNet)
+flowchart BT
+    A[/Input\] --> B{{MobileNet}}
     B --> C[GlobalAveragePooling2D]
     C --> D[Dropout 0.15]
     D --> E(Dense Plant 14 classes)
@@ -239,6 +245,8 @@ graph BT
     C --> CONCAT
     CONCAT --> H[Dropout 0.15]
     H --> I(Dense Diseases 21 classes)
-    E --> J[Output]
-    I --> J
+    E -----> J:::hidden
+    I --> K:::hidden
+
+    classDef hidden display: none;
 ```
