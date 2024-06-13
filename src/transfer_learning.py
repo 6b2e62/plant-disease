@@ -47,7 +47,7 @@ if __name__ == '__main__':
                       job_name=f"{args.model}_TF")
 
     if args.epochs:
-        trainer.overload_config(epochs=args.epochs)
+        trainer.overload_config({'epochs': args.epochs})
 
     trainer.fit(checkpoints_on_epochs=args.with_checkpoints)
 

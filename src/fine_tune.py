@@ -41,7 +41,7 @@ else:
     exit(1)
 
 if args.epochs:
-    model.overload_config(epochs=args.epochs)
+    model.overload_config({'epochs': args.epochs})
     
 model.fit(checkpoint=args.with_checkpoints)
 model.save(f"{args.model}_256.keras")
