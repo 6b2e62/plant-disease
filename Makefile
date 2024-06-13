@@ -13,7 +13,7 @@ unzip-dataset:
 	python3 src/file_manager/file_manager.py --unzip
 
 resize-dataset:
-	python3 src/file_manager/file_manager.py --resize --shape 96 96 --source "original_dataset"
+	python3 src/file_manager/file_manager.py --resize --shape 128 128 --source "original_dataset"
 
 sobel-dataset:
 	python3 src/file_manager/file_manager.py --sobel --source "resized_dataset"
