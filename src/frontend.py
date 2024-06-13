@@ -21,6 +21,7 @@ parser.add_argument('--model', type=str, choices=[
 parser.add_argument('--size', type=str, help='Choose dataset size')
 parser.add_argument('--path', type=str, required=True,
                     help='Path to the model weights file')
+parser.add_argument('--double-output', required=False, action='store_true')
 args = parser.parse_args()
 
 model = load_model(args)
