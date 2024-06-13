@@ -76,6 +76,7 @@ Dane były augmentowane z użyciem następujących technik:
 | Transfer learning na danych o różnych rozmiarach | 64x64, 96x96, 128x128, 224x224, 256x256  | Na podstawie każdej opcji można było osiągnąć wysoką skuteczność na zbiorze testowym (>90%). Jednakże 256x256 osiągnął najlepszy rezultat, również heatmap'a była bardziej precyzyjna.       |
 | Transfer learning z różnymi filtrami             | grayscale, gradient                      | Filtry nie mają pozytywnego wpływu na działanie modeli i proces uczenia.                                                                                           |
 | Sposób uczenia                                   | Transfer learning, training from scratch | W obu przypadkach uzyskujemy bardzo wysokie accuracy (>90%), jednakże w przypadku transfer learning'u możemy zaobserwować, że heatmap'y skupiają się na bardziej istotnych cecach. |
+| Klasyfikacja z użyciem wielu wyjść               | [Opisane w sekcji technicznej](## Training models) |
 
 ## Najlepsze uzyskane wyniki z transfer learningu
 
