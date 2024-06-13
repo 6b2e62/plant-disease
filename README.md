@@ -101,6 +101,7 @@ Dane były augmentowane z użyciem następujących technik:
     - model jest bardzo podatny na zmianę kolorów (np. ciemny lub jasny liść)​
     - model Jest bardzo podatny na wyróżniające się kolory na zdjęciu​
     - jest podatny na elementy poza kadrem
+- Mimo bardzo dobrych wyników zarówno w transfer learningu i uczeniu od 0, w przypadku uczenia od 0, model radzi sobie gorzej ze zdjęciami z Internetu
 
 ## Dalsze kroki - co można zrobić lepiej, więcej?
 
