@@ -138,6 +138,8 @@ class FileManager:
         if not os.path.exists(main_path / dataset_name):
             counter = 0
             for file in glob.glob(str(path_to_train_and_valid) % source_dataset_name, recursive=True):
+                if file.find('train_valid') >= 0:
+                    continue
                 counter += 1
                 path_to_file = file.replace("\\", "/")
                 image = cv2.imread(path_to_file)
@@ -152,6 +154,8 @@ class FileManager:
         if not os.path.exists(main_path / dataset_name):
             counter = 0
             for file in glob.glob(str(path_to_train_and_valid) % source_dataset_name, recursive=True):
+                if file.find('train_valid') >= 0:
+                    continue
                 counter += 1
                 path_to_file = file.replace("\\", "/")
                 image = cv2.imread(path_to_file)
