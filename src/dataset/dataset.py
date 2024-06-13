@@ -7,16 +7,17 @@ from .consts import ALL_CLASSES, DISEASE_CLASSES, PLANT_CLASSES
 
 
 class Dataset:
-    ''' Class to load and preprocess the dataset. 
+    '''
+    Class to load and preprocess the dataset. 
     Loads images and labels from the given directory to tf.data.Dataset.
 
-
     Args:
-        `data_dir (Path)`: Path to the dataset directory.
-        `seed (int)`: Seed for shuffling the dataset.
-        `repeat (int)`: Number of times to repeat the dataset.
-        `shuffle_buffer_size (int)`: Size of the buffer for shuffling the dataset.
-        `batch_size (int)`: Batch size for the dataset.
+        - `data_dir (Path)`: Path to the dataset directory.
+        - `seed (int)`: Seed for shuffling the dataset.
+        - `repeat (int)`: Number of times to repeat the dataset.
+        - `shuffle_buffer_size (int)`: Size of the buffer for shuffling the dataset.
+        - `batch_size (int)`: Batch size for the dataset.
+        - `double_output (bool)`: Whether to split dataset output or not.
     '''
 
     def __init__(self,
@@ -26,13 +27,15 @@ class Dataset:
                  repeat: int = 1,
                  # For now setting shuffle_buffer_size to smaller number due to system RAM issues on Google Colab
                  shuffle_buffer_size: int = 1000,
-                 batch_size: int = 64) -> None:
+                 batch_size: int = 64,
+                 double_output: bool = False) -> None:
         self.data_dir = data_dir
         self.seed = seed
         self.repeat = repeat
         self.shuffle_buffer_size = shuffle_buffer_size
         self.batch_size = batch_size
         self.preprocess_fn = preprocess_fn
+        self.double_output = double_output
 
         self.dataset = self.__load_dataset()\
             .shuffle(self.shuffle_buffer_size, seed=self.seed)\
@@ -45,9 +48,12 @@ class Dataset:
 
     def __load_dataset(self) -> tf.data.Dataset:
         dataset = tf.data.Dataset.list_files(str(self.data_dir / '*/*'))
-        dataset = dataset.map(
-            # For now setting num_parallel_calls to 2 due to system RAM issues on Google Colab
-            self.__preprocess_all_in_one, num_parallel_calls=2)
+        if self.double_output:
+            dataset = dataset.map(
+                self.__preprocess, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+        else:
+            dataset = dataset.map(
+                self.__preprocess_all_in_one, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
         return dataset
 
@@ -84,7 +90,7 @@ class Dataset:
         image = self.__get_image(image_path)
 
         # returns X, Y1, Y2
-        return image, labels[0], labels[1]
+        return image, {'plant': labels[0], 'disease': labels[1]}
 
     def __getattr__(self, attr):
         return getattr(self.dataset, attr)

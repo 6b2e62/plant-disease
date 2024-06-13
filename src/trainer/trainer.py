@@ -22,12 +22,13 @@ class Trainer:
     '''
     Trainer class for the model.
 
-    Params:
-    - `model: Model` - Model to be trained.
-    - `ds_path: Path` - Path to the dataset.
-    - `job_name: str` - Name of the job.
-    - `transfer_learning: bool` - Whether to use transfer learning or not.
-    - `with_wandb: bool` - Whether to use Weights and Biases or not.
+    Args:
+        - `model (Model)`: Model to be trained.
+        - `ds_path (Path)`: Path to the dataset.
+        - `job_name (str)`: Name of the job.
+        - `transfer_learning (bool)`: Whether to use transfer learning or not.
+        - `with_wandb (bool)`: Whether to use Weights and Biases or not.
+        - `double_output (bool)`: Whether to use dataset with split output or not.
     '''
 
     def __init__(self,
@@ -35,9 +36,11 @@ class Trainer:
                  ds_path: Path,
                  job_name: str,
                  transfer_learning: bool = True,
-                 with_wandb: bool = True) -> None:
+                 with_wandb: bool = True,
+                 double_output: bool = False) -> None:
         self.ds_path = ds_path
         self.transfer_learning = transfer_learning
+        self.double_output = double_output
 
         self.model = model
         self.job_config = self.model.job_config
@@ -206,11 +209,11 @@ class Trainer:
         Load the dataset.
         '''
         self.train_ds = Dataset(
-            ds_path / "train", self.preprocess_fn, batch_size)
+            ds_path / "train", self.preprocess_fn, batch_size, double_output=self.double_output)
         self.valid_ds = Dataset(
-            ds_path / "valid", self.preprocess_fn, batch_size)
+            ds_path / "valid", self.preprocess_fn, batch_size, double_output=self.double_output)
         self.test_ds = Dataset(
-            ds_path / "test", self.preprocess_fn, batch_size)
+            ds_path / "test", self.preprocess_fn, batch_size, double_output=self.double_output)
         self.input_shape = self.train_ds.take(
             1).as_numpy_iterator().next()[0].shape[1:]
 

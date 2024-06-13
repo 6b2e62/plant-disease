@@ -8,19 +8,28 @@ from utils import dotdict
 
 class Model:
     '''
-    Params:
-    - `input_shape: Tuple` - Shape of the input image.
-    - `transfer_learning: bool` - Whether to use transfer learning or not.
+    Base class model.
+
+    Args:
+        - `input_shape: (Tuple)`: Shape of the input image.
+        - `transfer_learning: (bool)`: Whether to use transfer learning or not.
+        - `double_classifier (bool)`: Whether to compile model with double output or not.
     '''
 
     job_config = dict()
 
     def __init__(self,
                  input_shape: Tuple,
-                 transfer_learning: bool = True) -> None:
+                 transfer_learning: bool = True,
+                 double_classifier: bool = False) -> None:
         self.transfer_learning = transfer_learning
         self.input_shape = input_shape
         self.job_config = dotdict(self.job_config)
+        if double_classifier:
+            self.job_config.loss = {'plant': 'categorical_crossentropy',
+                                    'disease': 'categorical_crossentropy'}
+            self.job_config.metrics = {'plant': 'accuracy',
+                                       'disease': 'accuracy'}
 
         if self.transfer_learning:
             self.weights = 'imagenet'
@@ -29,7 +38,10 @@ class Model:
         print("Weights: ", "random" if self.weights == None else self.weights)
 
         self.model = self.build_model()
-        self.__add_classifier()
+        if double_classifier:
+            self.__add_double_classifier()
+        else:
+            self.__add_classifier()
         self.compile()
         self.model.summary()
 
@@ -90,7 +102,7 @@ class Model:
         average_pooling_2d = keras.layers.GlobalAveragePooling2D()(
             self.model.layers[-1].output)
         dropout = keras.layers.Dropout(0.2)(average_pooling_2d)
-        dense = self.dense1 = keras.layers.Dense(
+        dense = keras.layers.Dense(
             38, activation=tf.nn.softmax)(dropout)
 
         # Freeze the Model
@@ -101,3 +113,25 @@ class Model:
             outputs=[dense])
 
         self.model = model_with_classifier
+
+    def __add_double_classifier(self):
+        avgerage_pooling_2d_1 = keras.layers.GlobalAveragePooling2D()(
+            self.model.layers[-1].output)
+        dropout1 = keras.layers.Dropout(0.3)(avgerage_pooling_2d_1)
+        dense1 = keras.layers.Dense(
+            14, activation=tf.nn.softmax, name='plant')(dropout1)
+
+        avgerage_pooling_2d_2 = keras.layers.GlobalAveragePooling2D()(
+            self.model.layers[-1].output)
+        dropout2 = keras.layers.Dropout(0.3)(avgerage_pooling_2d_2)
+        dense2 = keras.layers.Dense(
+            21, activation=tf.nn.softmax, name='disease')(dropout2)
+
+        self.model.trainable = not self.transfer_learning
+
+        model_with_classifiers = keras.Model(
+            inputs=self.model.inputs,
+            outputs=[dense1, dense2]
+        )
+
+        self.model = model_with_classifiers

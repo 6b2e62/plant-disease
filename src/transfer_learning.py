@@ -18,17 +18,21 @@ def load_args():
     parser.add_argument('--epochs', type=int, required=False)
     parser.add_argument('--with-checkpoints',
                         required=False, action='store_true')
+    parser.add_argument('--double-output', required=False, action='store_true')
     return parser.parse_args()
 
 
 def load_model(args):
     input_shape = (int(args.size), int(args.size), 3)
     if args.model == 'resnet50':
-        model = Resnet50V2Model(input_shape)
+        model = Resnet50V2Model(
+            input_shape, double_classifier=args.double_output)
     elif args.model == 'efficientnet':
-        model = EfficientNetV2B0Model(input_shape)
+        model = EfficientNetV2B0Model(
+            input_shape, double_classifier=args.double_output)
     elif args.model == 'mobilenet':
-        model = MobilenetV2Model(input_shape)
+        model = MobilenetV2Model(
+            input_shape, double_classifier=args.double_output)
     else:
         model = TestModel()
     return model
@@ -44,7 +48,8 @@ if __name__ == '__main__':
 
     trainer = Trainer(model,
                       Path(f'./data/resized_dataset_{args.size}_{args.size}/'),
-                      job_name=f"{args.model}_TF")
+                      job_name=f"{args.model}_TF",
+                      double_output=args.double_output)
 
     if args.epochs:
         trainer.overload_config({'epochs': args.epochs})
