@@ -1,3 +1,4 @@
+from math import sqrt
 from pathlib import Path
 
 import optuna
@@ -185,15 +186,23 @@ class Trainer:
                  checkpoints_on_epochs=self.checkpoints_on_epochs)
 
         score = self.model.evaluate(self.test_ds.get_dataset())
-        wandb.log({
-            "score": score[1]
-        })
 
-        if score[1] > self.score:
+        if self.double_output:
+            wandb.log({
+                'plant_score': score[1],
+                'disease_score': score[2]
+            })
+        else:
+            wandb.log({
+                "score": score[1]
+            })
+
+        if not self.double_output and score[1] > self.score or self.double_output and sqrt(score[1]**2 + score[2]**2) > self.score:
             self.model.save(
                 best_score_filepath.format(self.model.__class__.__name__))
-            self.score = score[1]
-        return score[1]
+            self.score = score[1] if not self.double_output else sqrt(
+                score[1]**2 + score[2]**2)
+        return score[1] if not self.double_output else sqrt(score[1]**2 + score[2]**2)
 
     def __init_wandb(self):
         wandb.init(

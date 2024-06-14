@@ -115,15 +115,16 @@ class Model:
         self.model = model_with_classifier
 
     def __add_double_classifier(self):
-        avgerage_pooling_2d_1 = keras.layers.GlobalAveragePooling2D()(
+        avgerage_pooling_2d = keras.layers.GlobalAveragePooling2D()(
             self.model.layers[-1].output)
-        dropout1 = keras.layers.Dropout(0.3)(avgerage_pooling_2d_1)
+
+        dropout1 = keras.layers.Dropout(0.15)(avgerage_pooling_2d)
         dense1 = keras.layers.Dense(
             14, activation=tf.nn.softmax, name='plant')(dropout1)
 
-        avgerage_pooling_2d_2 = keras.layers.GlobalAveragePooling2D()(
-            self.model.layers[-1].output)
-        dropout2 = keras.layers.Dropout(0.3)(avgerage_pooling_2d_2)
+        concat = keras.layers.concatenate([avgerage_pooling_2d, dense1])
+
+        dropout2 = keras.layers.Dropout(0.15)(concat)
         dense2 = keras.layers.Dense(
             21, activation=tf.nn.softmax, name='disease')(dropout2)
 
